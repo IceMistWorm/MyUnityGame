@@ -890,7 +890,7 @@ MonoBehaviour:
   hazard2: {fileID: 1480982933082034, guid: 8c3a55a3ebcca8546ac4fb06e44e6cee, type: 2}
   hazard3: {fileID: 1744922444796238, guid: 130988a154da68641a834b7b5b39ea25, type: 2}
   hazard4: {fileID: 1167251444570476, guid: 03d3280761e0cc441bef50a554106c6d, type: 2}
-  hazard5: {fileID: 1744922444796238, guid: 130988a154da68641a834b7b5b39ea25, type: 2}
+  hazard5: {fileID: 1747045713423942, guid: dd0dcc7e60bc39c4ab4da924a1ae1d3c, type: 2}
   greatMosaicWall: {fileID: 1995620508427674, guid: 60545941d38232b4abffdadd59d2e1a3,
     type: 2}
   bigAnnoyingBall: {fileID: 1550038332389120, guid: a9006ce07987ae44aa05f8e07011909f,
