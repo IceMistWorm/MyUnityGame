@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour {
 
     public GameObject hazard, hazard2, hazard3, hazard4,hazard5;
-    public GameObject greatMosaicWall;
+    public GameObject greatMosaicWall, bigAnnoyingBall;
     public Vector3 spawnValues;
     public int hazardCount;
     public float spawnWait;
@@ -19,6 +19,7 @@ public class GameController : MonoBehaviour {
     public AudioClip bossAttack3;
     public AudioClip bossDefeated;
     public AudioClip playerDeath;
+    public AudioClip horn;
 
     public GUIText bosslifeText;
     public GUIText restartText;
@@ -41,10 +42,13 @@ public class GameController : MonoBehaviour {
     private float spell1_time = 2.5f;
     private float spellRockWater = 2.5f;
     private float spell3_time = 2.5f;
+    private float accumulateTime = 4.0f;
+    private float bossSummonBallTime = 6.0f;
     private int bossBasicLife = 8000;
     private int bossPreviousSpell;
     private bool randomSkipIncrease = true;
     private bool attackHitPlayer = false;
+    private GameObject boss;
 
     void Start()
     {
@@ -59,6 +63,7 @@ public class GameController : MonoBehaviour {
         UpdateBossLife();
         StartCoroutine(SpawnWaves());
         bossPreviousSpell = bossSpell;
+        boss = GameObject.FindGameObjectWithTag("Boss");
     }
 
     private void Awake()
@@ -84,7 +89,25 @@ public class GameController : MonoBehaviour {
                 GameOver();
             }
         }
-
+        if(bossSpell == 5)
+        {
+            accumulateTime += Time.deltaTime;
+            float attackRatio = (float)bosslife / (float)bossBasicLife;
+            bossSummonBallTime = 6.0f * attackRatio;
+            if (bossSummonBallTime <= 3.0f)
+            {
+                bossSummonBallTime = 3.0f;
+            }
+            if (accumulateTime >= bossSummonBallTime)
+            {
+                source.PlayOneShot(horn,0.85f);
+                Vector3 spawnPosition = new Vector3(boss.transform.position.x, boss.transform.position.y, boss.transform.position.z);
+                Quaternion spawnRotation = Quaternion.identity;
+                Instantiate(bigAnnoyingBall, spawnPosition, spawnRotation);
+                accumulateTime = 0;
+            }
+        }
+        
 
     }
 
@@ -144,9 +167,33 @@ public class GameController : MonoBehaviour {
                 {
 
                 }
+
+                /**
+                 *   Boss Spell Card: Big annoy ball
+                 *
+                 */
+
                 else if (bossSpell == 5)
                 {
-
+                    if (i % 11 == 0)
+                    {
+                        source.PlayOneShot(bossBasicAttack1, 1f);
+                        if (basicAttackTime1 > 0.75f)
+                        {
+                            float attackRatio = (float)bosslife / (float)bossBasicLife;
+                            basicAttackTime1 = 2.5f * attackRatio;
+                        }
+                        if (basicAttackTime1 < 0.75f)
+                        {
+                            basicAttackTime1 = 0.75f;
+                        }
+                        yield return new WaitForSeconds(basicAttackTime1);
+                    }
+                    position_x = Random.Range(-7, 7);
+                    position_z = Random.Range(25, 40);
+                    spawnPosition = new Vector3(position_x, 0.5f, position_z);
+                    spawnRotation = Quaternion.identity;
+                    Instantiate(hazard5, spawnPosition, spawnRotation);
                 }
                 /*
                  *  This is the normal attack from the boss (before spell card 1)

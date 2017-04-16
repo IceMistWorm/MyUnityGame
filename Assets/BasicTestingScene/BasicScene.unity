@@ -893,6 +893,8 @@ MonoBehaviour:
   hazard5: {fileID: 1744922444796238, guid: 130988a154da68641a834b7b5b39ea25, type: 2}
   greatMosaicWall: {fileID: 1995620508427674, guid: 60545941d38232b4abffdadd59d2e1a3,
     type: 2}
+  bigAnnoyingBall: {fileID: 1550038332389120, guid: a9006ce07987ae44aa05f8e07011909f,
+    type: 2}
   spawnValues: {x: 2, y: -20, z: 5}
   hazardCount: 14000
   spawnWait: 0
@@ -905,6 +907,7 @@ MonoBehaviour:
   bossAttack3: {fileID: 8300000, guid: 940eb741acc07a147bff11fd60065921, type: 3}
   bossDefeated: {fileID: 8300000, guid: acf97f7037feb2548a01ab498076bbd5, type: 3}
   playerDeath: {fileID: 8300000, guid: 21975e0bb40bf7046a9831aa11377569, type: 3}
+  horn: {fileID: 8300000, guid: ef6ecc4dab0de814ba55491e1f213262, type: 3}
   bosslifeText: {fileID: 271611711}
   restartText: {fileID: 2027845385}
   gameoverText: {fileID: 881133532}
