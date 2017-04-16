@@ -74,7 +74,12 @@ public class GameController : MonoBehaviour {
         }
         if (attackHitPlayer) {
             attackHitPlayer = false;
+            Destroy(GameObject.FindGameObjectWithTag("Player"));
             source.PlayOneShot(playerDeath);
+            if (isGameClear() == false)
+            {
+                GameOver();
+            }
         }
     }
 

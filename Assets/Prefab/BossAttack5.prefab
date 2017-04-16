@@ -113,6 +113,8 @@ MonoBehaviour:
   explosionSound: {fileID: 8300000, guid: e299e22968175e14da7d20bbb6741fa6, type: 3}
   lifetime: 3
   explosion: {fileID: 1765225896668242, guid: 6887881dfa0e8464f892d8c8786c9bcf, type: 2}
+  playerExplosion: {fileID: 1133775582045018, guid: 6222a597d25c8fa4298c2291898fd6ce,
+    type: 2}
 --- !u!114 &114744146416735802
 MonoBehaviour:
   m_ObjectHideFlags: 1

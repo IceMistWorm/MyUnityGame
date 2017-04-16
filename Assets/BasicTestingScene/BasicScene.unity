@@ -907,7 +907,7 @@ MonoBehaviour:
   gameoverText: {fileID: 881133532}
   gameclearText: {fileID: 925574613}
   bosslife: 8000
-  bossSpell: 3
+  bossSpell: 1
 --- !u!4 &1892536969
 Transform:
   m_ObjectHideFlags: 0
