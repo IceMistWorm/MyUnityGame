@@ -408,6 +408,35 @@ MonoBehaviour:
   reduceValue: 150
   bossExplosion: {fileID: 1133775582045018, guid: 6222a597d25c8fa4298c2291898fd6ce,
     type: 2}
+--- !u!114 &997679668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 997679665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f98b4544e1ae004bbdfd49070506e93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bossMoveTime: 5
+  speed: 5
+  tilt: 4
+--- !u!54 &997679671
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 997679665}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &1182001187
 Prefab:
   m_ObjectHideFlags: 0
@@ -750,7 +779,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1717065687}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.52
   m_Height: 1.25
   m_Direction: 2
@@ -1146,7 +1175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff7c5bda55efa6f458b19b5e53523e3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  speed: 6
   tilt: 4
   boundary:
     xMin: -4.5
