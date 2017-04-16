@@ -134,6 +134,21 @@ public class GameController : MonoBehaviour {
 
                 if (bossSpell == 3)
                 {
+                    // generate 20 rocks to attack every time
+                    if (i % 20 == 0)
+                    {
+                        source.PlayOneShot(bossAttack1, 1f);
+                        if (spellRockWater > 0.75f)
+                        {
+                            float attackRatio = (float)bosslife / (float)bossBasicLife;
+                            spellRockWater = 2.5f * attackRatio;
+                        }
+                        if (spellRockWater < 0.75f)
+                        {
+                            spellRockWater = 0.75f;
+                        }
+                        yield return new WaitForSeconds(spellRockWater);
+                    }
                     spawnPosition = new Vector3(Random.Range(-7, 7), spawnValues.y, Random.Range(-7.5f, 7.5f));
                     //position_x = -7 + i % 14;
                     //position_z = -7.5f + i % 15;
@@ -224,23 +239,6 @@ public class GameController : MonoBehaviour {
                 yield return new WaitForSeconds(spawnWait);
             }
 
-            // behavior for spell card outside the forloop
-
-            if (bossSpell == 3) {
-
-                source.PlayOneShot(bossAttack1, 1f);
-                if (spellRockWater > 0.75f)
-                {
-                    float attackRatio = (float)bosslife / (float)bossBasicLife;
-                    spellRockWater = 2.5f * attackRatio;
-                }
-                if (spellRockWater < 0.75f)
-                {
-                    spellRockWater = 0.75f;
-                }
-                yield return new WaitForSeconds(spellRockWater);
-
-            }
 
             if (waves < 4)
             {
