@@ -135,7 +135,16 @@ public class GameController : MonoBehaviour {
                     break;
                 }
 
-                if (bossSpell == 5)
+                /*
+                 *  This is the normal attack from the boss (before spell card 1)
+                 *  which sends a basic rock pattern and player just need to move left and right to dodge
+                 *  
+                 */
+                if (bossSpell == 6)
+                {
+
+                }
+                else if (bossSpell == 5)
                 {
 
                 }
@@ -311,7 +320,7 @@ public class GameController : MonoBehaviour {
             }
 
             // entering the spell: the great mosaic wall
-            if (bossSpell == 3) {
+            if (bossSpell == 4) {
                 Vector3 spawnPosition;
                 Quaternion spawnRotation = Quaternion.identity;
                 for (int i = 0; i < 5; i++) {
