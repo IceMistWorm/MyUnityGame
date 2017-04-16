@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour {
 
     public GameObject hazard, hazard2, hazard3, hazard4,hazard5;
+    public GameObject greatMosaicWall;
     public Vector3 spawnValues;
     public int hazardCount;
     public float spawnWait;
@@ -83,6 +84,8 @@ public class GameController : MonoBehaviour {
                 GameOver();
             }
         }
+
+
     }
 
     IEnumerator SpawnWaves()
@@ -132,14 +135,17 @@ public class GameController : MonoBehaviour {
                     break;
                 }
 
+                if (bossSpell == 5)
+                {
 
+                }
                 /*
                  *  This is the normal attack from the boss (before spell card 1)
                  *  which sends a basic rock pattern and player just need to move left and right to dodge
                  *  
                  */
 
-                if (bossSpell == 4) {
+                else if (bossSpell == 4) {
                     if (i % 11 == 0)
                     {
                         source.PlayOneShot(bossBasicAttack1, 1f);
@@ -302,6 +308,18 @@ public class GameController : MonoBehaviour {
             if (bossSpell > 0)
             {
                 source.PlayOneShot(bossSpellCard);
+            }
+
+            // entering the spell: the great mosaic wall
+            if (bossSpell == 3) {
+                Vector3 spawnPosition;
+                Quaternion spawnRotation = Quaternion.identity;
+                for (int i = 0; i < 5; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        spawnPosition = new Vector3(-10 + i * 5, -5+j*5, 7);
+                        Instantiate(greatMosaicWall, spawnPosition, spawnRotation);
+                    }
+                }
             }
         }
         UpdateBossLife();
