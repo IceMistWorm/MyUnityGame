@@ -9,7 +9,6 @@ public class DestroyByContact : MonoBehaviour {
     public GameObject explosion;
     public GameObject playerExplosion;
     private GameController gameController;
-    private AudioSource source;
 
     void Start()
     {
@@ -24,11 +23,6 @@ public class DestroyByContact : MonoBehaviour {
         }
     }
 
-    private void Awake()
-    {
-        source = GetComponent<AudioSource>();
-    }
-
     void OnTriggerEnter(Collider other)
     {
         //Debug.Log(other.name);
@@ -41,7 +35,6 @@ public class DestroyByContact : MonoBehaviour {
         if (other.tag == "Player")
         {
             Instantiate(playerExplosion, other.transform.position, other.transform.rotation);
-            //source.PlayOneShot(playerDeath);
             gameController.setAttackHitPlayer(true);
             if (gameController.isGameClear() == false)
             {
