@@ -55,6 +55,7 @@ GameObject:
   - component: {fileID: 4087913016960428}
   - component: {fileID: 198663632075511214}
   - component: {fileID: 199937080894425542}
+  - component: {fileID: 114365354196450002}
   m_Layer: 0
   m_Name: FlamesParticleEffect
   m_TagString: Untagged
@@ -103,6 +104,18 @@ Transform:
   m_Father: {fileID: 4087913016960428}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114365354196450002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1458369854421654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd1e9b3b853a96d438bad55e60431504, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifetime: 2
 --- !u!198 &198044215935444920
 ParticleSystem:
   m_ObjectHideFlags: 1

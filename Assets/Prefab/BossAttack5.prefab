@@ -127,7 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spellIndicator: 1
-  explosion: {fileID: 1133775582045018, guid: 6222a597d25c8fa4298c2291898fd6ce, type: 2}
+  explosion: {fileID: 1458369854421654, guid: fdade9c876470d141a41f92859b327dc, type: 2}
 --- !u!114 &114894819781185770
 MonoBehaviour:
   m_ObjectHideFlags: 1
