@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour {
     public float waveWait;
 
     public AudioClip bossSpellCard;
+    public AudioClip bossBasicAttack1;
     public AudioClip bossAttack1;
     public AudioClip bossAttack2;
     public AudioClip bossAttack3;
@@ -35,6 +36,7 @@ public class GameController : MonoBehaviour {
     private int waves;
     private int newHazardCount;
     private int random_skip = 3;
+    private float basicAttackTime1 = 2.5f;
     private float spell1_time = 2.5f;
     private float spellRockWater = 2.5f;
     private float spell3_time = 2.5f;
@@ -130,14 +132,40 @@ public class GameController : MonoBehaviour {
                     break;
                 }
 
+
+                /*
+                 *  This is the normal attack from the boss (before spell card 1)
+                 *  which sends a basic rock pattern and player just need to move left and right to dodge
+                 *  
+                 */
+
+                if (bossSpell == 4) {
+                    if (i % 11 == 0)
+                    {
+                        source.PlayOneShot(bossBasicAttack1, 1f);
+                        if (basicAttackTime1 > 0.75f)
+                        {
+                            float attackRatio = (float)bosslife / (float)bossBasicLife;
+                            basicAttackTime1 = 2.5f * attackRatio;
+                        }
+                        if (basicAttackTime1 < 0.75f)
+                        {
+                            basicAttackTime1 = 0.75f;
+                        }
+                        yield return new WaitForSeconds(basicAttackTime1);
+                    }
+                    position_x = Random.Range(-7, 7);
+                    position_z = Random.Range(25, 40);
+                    spawnPosition = new Vector3(position_x, 0.5f, position_z);
+                    spawnRotation = Quaternion.identity;
+                    Instantiate(hazard4, spawnPosition, spawnRotation);
+                }                
                 /*
                  *  Spell card No1: (to be named)
                  *  rocks emerges under the water, player needs to dodge them base on the shadow shown on the water.
                  * 
                  */
-                
-
-                if (bossSpell == 3)
+                else if (bossSpell == 3)
                 {
                     // generate 20 rocks to attack every time
                     if (i % 20 == 0)
@@ -170,8 +198,6 @@ public class GameController : MonoBehaviour {
                  */
                 else if (bossSpell == 2)
                 {
-                    //spawnPosition = new Vector3(Random.Range(-7, 7), 0.5f, Random.Range(-7.5f, 7.5f));
-
                     
                     //random_skip = 4 + (i/14)%6;
                     
@@ -307,6 +333,7 @@ public class GameController : MonoBehaviour {
     public void GameClear()
     {
         gameoverText.text = "Congratulation! Game Clear!";
+        source.PlayOneShot(bossDefeated, 0.5f);
         gameclear = true;
     }
 
