@@ -1,0 +1,338 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class GameController : MonoBehaviour {
+
+    public GameObject hazard, hazard2, hazard3, hazard4,hazard5;
+    public Vector3 spawnValues;
+    public int hazardCount;
+    public float spawnWait;
+    public float startWait;
+    public float waveWait;
+
+    public AudioClip bossSpellCard;
+    public AudioClip bossAttack1;
+    public AudioClip bossAttack2;
+    public AudioClip bossAttack3;
+    public AudioClip bossDefeated;
+    public AudioClip playerDeath;
+
+    public GUIText bosslifeText;
+    public GUIText restartText;
+    public GUIText gameoverText;
+    public GUIText gameclearText;
+
+    public int bosslife;
+    public int bossSpell;
+
+    private AudioSource source;
+    private bool gameover;
+    private bool gameclear;
+    private bool restart;
+    private bool bossExplode = false;
+
+    private int waves;
+    private int newHazardCount;
+    private int random_skip = 3;
+    private float spell1_time = 2.5f;
+    private float spell3_time = 2.5f;
+    private int bossBasicLife = 8000;
+    private int bossPreviousSpell;
+    private bool randomSkipIncrease = true;
+    private bool attackHitPlayer = false;
+
+    void Start()
+    {
+        //bosslife = 4000;
+        bosslifeText.text = "";
+        restartText.text = "";
+        gameoverText.text = "";
+        gameclearText.text = "";
+        gameover = false;
+        gameclear = false;
+        restart = false;
+        UpdateBossLife();
+        StartCoroutine(SpawnWaves());
+        bossPreviousSpell = bossSpell;
+    }
+
+    private void Awake()
+    {
+        source = GetComponent<AudioSource>();
+    }
+
+    void Update()
+    {
+        if (restart)
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+            }
+        }
+        if (attackHitPlayer) {
+            attackHitPlayer = false;
+            source.PlayOneShot(playerDeath);
+        }
+    }
+
+    IEnumerator SpawnWaves()
+    {
+        yield return new WaitForSeconds(startWait);
+        Vector3 spawnPosition;
+        Quaternion spawnRotation;
+        waves = 0;
+        while (true)
+        {
+
+            if (waves == 0)
+            {
+                newHazardCount = hazardCount;
+            }
+            else if (waves == 1)
+            {
+                newHazardCount = hazardCount;
+            }
+            else if (waves == 2)
+            {
+                newHazardCount = hazardCount;
+            }
+            else if (waves == 3)
+            {
+                newHazardCount = hazardCount;
+            }
+            else if (waves == 4) {
+                newHazardCount = hazardCount;
+            }
+            for (int i = 0; i < newHazardCount; i++)
+            {
+                //Vector3 spawnPosition = new Vector3(Random.Range(-spawnValues.x, -8), spawnValues.y, Random.Range(spawnValues.z, spawnValues.z-8));
+                //Quaternion spawnRotation = Quaternion.identity;
+                //Instantiate(hazard, spawnPosition, spawnRotation);
+                //spawnPosition = new Vector3(Random.Range(spawnValues.x, 8), spawnValues.y, Random.Range(spawnValues.z, spawnValues.z - 8));
+                //spawnRotation = Quaternion.identity;
+                //Instantiate(hazard2, spawnPosition, spawnRotation);
+                //spawnPosition = new Vector3(Random.Range(-9, -4), spawnValues.y, Random.Range(-7.5f, 0.5f));
+                //spawnRotation = Quaternion.identity;
+                //Instantiate(hazard3, spawnPosition, spawnRotation);
+                //spawnPosition = new Vector3(Random.Range(4, 9), spawnValues.y, Random.Range(-7.5f, 0.5f));
+                //spawnRotation = Quaternion.identity;
+                //Instantiate(hazard4, spawnPosition, spawnRotation);
+
+                float position_x, position_z;
+
+                if (isGameOver())
+                {
+                    break;
+                }
+
+                /* if spell card change, wait a few second before continue*/
+
+                if (bossPreviousSpell != bossSpell) {
+                    bossPreviousSpell = bossSpell;
+                    yield return new WaitForSeconds(1.5f);
+                    break;
+                }
+                
+
+                if (bossSpell == 3)
+                {
+                    spawnPosition = new Vector3(Random.Range(-7, 7), spawnValues.y, Random.Range(-7.5f, 7.5f));
+                    //position_x = -7 + i % 14;
+                    //position_z = -7.5f + i % 15;
+                    //spawnPosition = new Vector3(position_x, spawnValues.y, position_z);
+                    spawnRotation = Quaternion.identity;
+                    Instantiate(hazard, spawnPosition, spawnRotation);
+                }
+                /*
+                 *  This is the normal attack from the boss
+                 *  which forms a basic rock pattern and player just need to move left and right to dodge
+                 *  simple but a fast spell 
+                 * 
+                 */
+                else if (bossSpell == 2)
+                {
+                    //spawnPosition = new Vector3(Random.Range(-7, 7), 0.5f, Random.Range(-7.5f, 7.5f));
+
+                    
+                    //random_skip = 4 + (i/14)%6;
+                    
+                    if (i % 14 == 0) {
+
+                        if (randomSkipIncrease)
+                        {
+                            random_skip++;
+                            if (random_skip >= 12)
+                            {
+                                randomSkipIncrease = false;
+                            }
+                        }
+                        else
+                        {
+                            random_skip--;
+                            if (random_skip <= 3)
+                            {
+                                randomSkipIncrease = true;
+                            }
+                        }
+
+                        if (spell1_time > 0.15f)
+                        {
+                            //spell1_time -= (i/14)*0.1f;
+                            float attackRatio = (float)bosslife / (float)bossBasicLife;
+                            spell1_time = 2.5f * attackRatio;
+                        }
+                        if (spell1_time < 0.15f)
+                        {
+                            spell1_time = 0.15f;
+                        }
+                        yield return new WaitForSeconds(spell1_time);
+                        source.PlayOneShot(bossAttack2);
+
+                    }
+
+                    if (i % 14 <= random_skip && i % 14 >= random_skip-1)
+                    {
+                        //Debug.Log("should have this in time increase " + i/14);
+                        continue;
+                    }
+
+                    position_x = -7 + i % 14;
+                    position_z = 25;
+                    spawnPosition = new Vector3(position_x, 0.5f, position_z);
+                    spawnRotation = Quaternion.identity;
+                    Instantiate(hazard2, spawnPosition, spawnRotation);
+                }
+                else if (bossSpell == 1)
+                {
+                    if (i % 25 == 0)
+                    {
+                        if (spell3_time > 1.5f)
+                        {
+                            //spell1_time -= (i/14)*0.1f;
+                            spell3_time = 2.5f * (bosslife / bossBasicLife);
+                        }
+                        if (spell3_time < 1.5f)
+                        {
+                            spell3_time = 1.5f;
+                        }
+                        yield return new WaitForSeconds(spell3_time);
+                    }
+                    spawnPosition = new Vector3(Random.Range(-7, 7), 0.5f, Random.Range(-7.5f, 7.5f));
+                    spawnRotation = Quaternion.identity;
+                    Instantiate(hazard3, spawnPosition, spawnRotation);
+                    source.PlayOneShot(bossAttack3,0.3f);
+                }/*
+                else if (waves == 3)
+                {
+                    spawnPosition = new Vector3(Random.Range(-7, 7), spawnValues.y, Random.Range(-7.5f, 7.5f));
+                    spawnRotation = Quaternion.identity;
+                    Instantiate(hazard4, spawnPosition, spawnRotation);
+                }
+                else if (waves == 4)
+                {
+                    spawnPosition = new Vector3(Random.Range(-7, 7), 1.3f, Random.Range(-7.5f, 7.5f));
+                    spawnRotation = Quaternion.identity;
+                    Instantiate(hazard5, spawnPosition, spawnRotation);
+                }*/
+
+
+
+
+
+                yield return new WaitForSeconds(spawnWait);
+
+                //yield return new WaitForSeconds(spawnWait);
+            }
+
+            if (waves < 4)
+            {
+                waves++;
+            }
+            else {
+                waves = 0;
+            }
+
+            yield return new WaitForSeconds(waveWait);
+
+            if (gameover || gameclear)
+            {
+                restartText.text = "Press 'R' for Restart";
+                restart = true;
+                break;
+            }
+        }
+    }
+
+
+    public void BossReduceLife(int lifeReduce)
+    {
+        bosslife -= lifeReduce;
+        if (bosslife < 0)
+        {
+            bosslife = bossBasicLife;
+            setBossExplode(true);
+            bossSpell--;
+            if (bossSpell > 0)
+            {
+                source.PlayOneShot(bossSpellCard);
+            }
+        }
+        UpdateBossLife();
+    }
+
+    public int GetBossLife()
+    {
+        return bosslife;
+    }
+
+    void UpdateBossLife()
+    {
+        bosslifeText.text = "Boss Life Point: " + bosslife;
+    }
+
+    public int GetBossSpellTime()
+    {
+        return bossSpell;
+    }
+
+
+
+    public void GameOver()
+    {
+        gameoverText.text = "Game Over";
+        gameover = true;
+    }
+
+    public void GameClear()
+    {
+        gameoverText.text = "Congratulation! Game Clear!";
+        gameclear = true;
+    }
+
+    public bool isGameOver()
+    {
+        return gameover;        
+    }
+
+    public bool isGameClear()
+    {
+        return gameclear;
+    }
+
+    public bool isBossExplode()
+    {
+        return bossExplode;
+    }
+
+    public void setBossExplode(bool v)
+    {
+        bossExplode = v;
+    }
+
+    public void setAttackHitPlayer(bool v) {
+        attackHitPlayer = v;
+    }
+
+}
