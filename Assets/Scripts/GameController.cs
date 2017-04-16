@@ -36,6 +36,7 @@ public class GameController : MonoBehaviour {
     private int newHazardCount;
     private int random_skip = 3;
     private float spell1_time = 2.5f;
+    private float spellRockWater = 2.5f;
     private float spell3_time = 2.5f;
     private int bossBasicLife = 8000;
     private int bossPreviousSpell;
@@ -107,21 +108,10 @@ public class GameController : MonoBehaviour {
             }
             for (int i = 0; i < newHazardCount; i++)
             {
-                //Vector3 spawnPosition = new Vector3(Random.Range(-spawnValues.x, -8), spawnValues.y, Random.Range(spawnValues.z, spawnValues.z-8));
-                //Quaternion spawnRotation = Quaternion.identity;
-                //Instantiate(hazard, spawnPosition, spawnRotation);
-                //spawnPosition = new Vector3(Random.Range(spawnValues.x, 8), spawnValues.y, Random.Range(spawnValues.z, spawnValues.z - 8));
-                //spawnRotation = Quaternion.identity;
-                //Instantiate(hazard2, spawnPosition, spawnRotation);
-                //spawnPosition = new Vector3(Random.Range(-9, -4), spawnValues.y, Random.Range(-7.5f, 0.5f));
-                //spawnRotation = Quaternion.identity;
-                //Instantiate(hazard3, spawnPosition, spawnRotation);
-                //spawnPosition = new Vector3(Random.Range(4, 9), spawnValues.y, Random.Range(-7.5f, 0.5f));
-                //spawnRotation = Quaternion.identity;
-                //Instantiate(hazard4, spawnPosition, spawnRotation);
-
+                
                 float position_x, position_z;
 
+                // no generation attack if game is over or clear
                 if (isGameOver())
                 {
                     break;
@@ -134,6 +124,12 @@ public class GameController : MonoBehaviour {
                     yield return new WaitForSeconds(1.5f);
                     break;
                 }
+
+                /*
+                 *  Spell card No1: (to be named)
+                 *  rocks emerges under the water, player needs to dodge them base on the shadow shown on the water.
+                 * 
+                 */
                 
 
                 if (bossSpell == 3)
@@ -144,6 +140,7 @@ public class GameController : MonoBehaviour {
                     //spawnPosition = new Vector3(position_x, spawnValues.y, position_z);
                     spawnRotation = Quaternion.identity;
                     Instantiate(hazard, spawnPosition, spawnRotation);
+                    
                 }
                 /*
                  *  This is the normal attack from the boss
@@ -208,14 +205,14 @@ public class GameController : MonoBehaviour {
                 {
                     if (i % 25 == 0)
                     {
-                        if (spell3_time > 1.5f)
+                        if (spell3_time > 0.75f)
                         {
-                            //spell1_time -= (i/14)*0.1f;
-                            spell3_time = 2.5f * (bosslife / bossBasicLife);
+                            float attackRatio = (float)bosslife / (float)bossBasicLife;
+                            spell3_time = 2.5f * attackRatio;
                         }
-                        if (spell3_time < 1.5f)
+                        if (spell3_time < 0.75f)
                         {
-                            spell3_time = 1.5f;
+                            spell3_time = 0.75f;
                         }
                         yield return new WaitForSeconds(spell3_time);
                     }
@@ -223,27 +220,26 @@ public class GameController : MonoBehaviour {
                     spawnRotation = Quaternion.identity;
                     Instantiate(hazard3, spawnPosition, spawnRotation);
                     source.PlayOneShot(bossAttack3,0.3f);
-                }/*
-                else if (waves == 3)
-                {
-                    spawnPosition = new Vector3(Random.Range(-7, 7), spawnValues.y, Random.Range(-7.5f, 7.5f));
-                    spawnRotation = Quaternion.identity;
-                    Instantiate(hazard4, spawnPosition, spawnRotation);
                 }
-                else if (waves == 4)
-                {
-                    spawnPosition = new Vector3(Random.Range(-7, 7), 1.3f, Random.Range(-7.5f, 7.5f));
-                    spawnRotation = Quaternion.identity;
-                    Instantiate(hazard5, spawnPosition, spawnRotation);
-                }*/
-
-
-
-
-
                 yield return new WaitForSeconds(spawnWait);
+            }
 
-                //yield return new WaitForSeconds(spawnWait);
+            // behavior for spell card outside the forloop
+
+            if (bossSpell == 3) {
+
+                source.PlayOneShot(bossAttack1, 1f);
+                if (spellRockWater > 0.75f)
+                {
+                    float attackRatio = (float)bosslife / (float)bossBasicLife;
+                    spellRockWater = 2.5f * attackRatio;
+                }
+                if (spellRockWater < 0.75f)
+                {
+                    spellRockWater = 0.75f;
+                }
+                yield return new WaitForSeconds(spellRockWater);
+
             }
 
             if (waves < 4)
@@ -254,7 +250,7 @@ public class GameController : MonoBehaviour {
                 waves = 0;
             }
 
-            yield return new WaitForSeconds(waveWait);
+            //yield return new WaitForSeconds(waveWait);
 
             if (gameover || gameclear)
             {
