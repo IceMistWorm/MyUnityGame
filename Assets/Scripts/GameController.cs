@@ -5,9 +5,10 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
 
-    public GameObject hazard, hazard2, hazard3, hazard4,hazard5;
+    public GameObject hazard, hazard2, hazard3, hazard4,hazard5,hazard6,hazard7,mistyCosmicAttack;
     public GameObject greatMosaicWall, bigAnnoyingBall;
     public GameObject spellCardScene;
+    public GameObject MistyEffect,MistyEffect2;
     public Light dirRedLight;
     public Vector3 spawnValues;
     public int hazardCount;
@@ -24,6 +25,7 @@ public class GameController : MonoBehaviour {
     public AudioClip bossDefeated;
     public AudioClip playerDeath;
     public AudioClip horn;
+    public AudioClip wave;
 
     public GUIText bosslifeText;
     public GUIText restartText;
@@ -47,6 +49,8 @@ public class GameController : MonoBehaviour {
     private int newHazardCount;
     private int random_skip = 3;
     private float basicAttackTime1 = 2.5f;
+    private float basicAttackTime2 = 3.5f;
+    private float basicAttackTime3 = 3.5f;
     private float spell1_time = 2.5f;
     private float spellRockWater = 2.5f;
     private float spell3_time = 4.5f;
@@ -54,6 +58,7 @@ public class GameController : MonoBehaviour {
     private float accumulateTime = 0.0f;
 
     private float bossSummonBallTime = 6.0f;
+
     private int bossBasicLife = 8000;
     private int bossPreviousSpell;
     private bool randomSkipIncrease = true;
@@ -97,19 +102,14 @@ public class GameController : MonoBehaviour {
         }
         if (attackHitPlayer) {
             attackHitPlayer = false;
-            Destroy(GameObject.FindGameObjectWithTag("Player"));
+            //Destroy(GameObject.FindGameObjectWithTag("Player"));
             source.PlayOneShot(playerDeath);
             if (isGameClear() == false)
             {
-                GameOver();
+                //GameOver();
             }
         }
-        if(bossSpell == 6)
-        {
-            //dirRedLight.enabled = false;
-            //spellCardScene.SetActive(false);
-        }
-        else if(bossSpell == 5)
+        if(bossSpell == 7)
         {
             //dirRedLight.enabled = true;
             //spellCardScene.SetActive(true);
@@ -122,13 +122,24 @@ public class GameController : MonoBehaviour {
             }
             if (accumulateTime >= bossSummonBallTime)
             {
-                source.PlayOneShot(horn,0.85f);
+                source.PlayOneShot(horn, 0.85f);
                 Vector3 spawnPosition = new Vector3(boss.transform.position.x, boss.transform.position.y, boss.transform.position.z);
                 Quaternion spawnRotation = Quaternion.identity;
                 Instantiate(bigAnnoyingBall, spawnPosition, spawnRotation);
                 accumulateTime = 0;
             }
-        }else if(bossSpell == 4)
+        }
+        else if(bossSpell == 6)
+        {
+            
+        }
+        else if (bossSpell == 5)
+        {
+            //dirRedLight.enabled = false;
+            //spellCardScene.SetActive(false);
+            bossSummonBallTime = 6.0f;
+        }
+        else if(bossSpell == 4)
         {
             //dirRedLight.enabled = false;
             //spellCardScene.SetActive(false);
@@ -139,10 +150,24 @@ public class GameController : MonoBehaviour {
             //dirRedLight.enabled = true;
             //spellCardScene.SetActive(true);
         }
+        // misty cosmic attack update
         else if (bossSpell == 2)
         {
-            //dirRedLight.enabled = false;
-            //spellCardScene.SetActive(false);
+            accumulateTime += Time.deltaTime;
+            float attackRatio = (float)bosslife / (float)bossBasicLife;
+            bossSummonBallTime = 4.0f * attackRatio;
+            if (bossSummonBallTime <= 1.0f)
+            {
+                bossSummonBallTime = 1.0f;
+            }
+            if (accumulateTime >= bossSummonBallTime)
+            {
+                source.PlayOneShot(wave, 0.85f);
+                Vector3 spawnPosition = new Vector3(boss.transform.position.x, 0.5f, boss.transform.position.z);
+                Quaternion spawnRotation = Quaternion.identity;
+                Instantiate(mistyCosmicAttack, spawnPosition, spawnRotation);
+                accumulateTime = 0;
+            }
         }
         else if (bossSpell == 1)
         {
@@ -200,7 +225,7 @@ public class GameController : MonoBehaviour {
                 if (bossPreviousSpell != bossSpell) {
                     bossPreviousSpell = bossSpell;
                     SpellCardName.text = "";
-                    if (bossSpell % 2 == 1)
+                    if (bossSpell==1 || bossSpell == 3 || bossSpell == 5 || bossSpell == 7)
                     {
                         yield return new WaitForSeconds(1.5f);
                         updateSpellCardText();
@@ -216,28 +241,23 @@ public class GameController : MonoBehaviour {
                         updateSpellCardText();
                     }
                     yield return new WaitForSeconds(2.5f);
-                    
+                    if (bossSpell == 2) {
+                        Instantiate(MistyEffect);
+                    }else if (bossSpell == 4)
+                    {
+                        Instantiate(MistyEffect2);
+                    }
                     robotImage.enabled = false;
                     break;
                 }
 
 
-                /*
-                 *  This is the normal attack from the boss (before spell card 1)
-                 *  which sends a basic rock pattern and player just need to move left and right to dodge
-                 *  
-                 */
-                if (bossSpell == 6)
-                {
-
-                }
-
+                
                 /**
-                 *   Boss Spell Card: Big annoy ball
-                 *
-                 */
-
-                else if (bossSpell == 5)
+                *   Boss Spell Card: Big annoy ball
+                *
+                */
+                if (bossSpell == 7)
                 {
                     if (i % 11 == 0)
                     {
@@ -259,13 +279,71 @@ public class GameController : MonoBehaviour {
                     spawnRotation = Quaternion.identity;
                     Instantiate(hazard5, spawnPosition, spawnRotation);
                 }
+
                 /*
                  *  This is the normal attack from the boss (before spell card 1)
                  *  which sends a basic rock pattern and player just need to move left and right to dodge
                  *  
                  */
 
-                else if (bossSpell == 4) {
+                else if (bossSpell == 6)
+                {
+                    if (i % 14 == 0)
+                    {
+
+                        if (randomSkipIncrease)
+                        {
+                            random_skip++;
+                            if (random_skip >= 12)
+                            {
+                                randomSkipIncrease = false;
+                            }
+                        }
+                        else
+                        {
+                            random_skip--;
+                            if (random_skip <= 3)
+                            {
+                                randomSkipIncrease = true;
+                            }
+                        }
+
+                        if (basicAttackTime3 > 0.15f)
+                        {
+                            //spell1_time -= (i/14)*0.1f;
+                            float attackRatio = (float)bosslife / (float)bossBasicLife;
+                            basicAttackTime3 = 2.5f * attackRatio;
+                        }
+                        if (basicAttackTime3 < 0.15f)
+                        {
+                            basicAttackTime3 = 0.15f;
+                        }
+                        yield return new WaitForSeconds(basicAttackTime3);
+                        source.PlayOneShot(bossAttack2);
+
+                    }
+
+                    if (i % 14 <= random_skip && i % 14 >= random_skip - 1)
+                    {
+                        //Debug.Log("should have this in time increase " + i/14);
+                        continue;
+                    }
+
+                    position_x = -7 + i % 14;
+                    position_z = 25;
+                    spawnPosition = new Vector3(position_x, 0.5f, position_z);
+                    spawnRotation = Quaternion.identity;
+                    Instantiate(hazard7, spawnPosition, spawnRotation);
+                }
+
+                /*
+                 *  This is the normal attack from the boss (before spell card 1)
+                 *  which sends a basic rock pattern and player just need to move left and right to dodge
+                 *  
+                 */
+
+                else if (bossSpell == 5)
+                {
 
                     // entering the spell: the great mosaic wall
                     if (!wallBuilt)
@@ -303,12 +381,68 @@ public class GameController : MonoBehaviour {
                     spawnPosition = new Vector3(position_x, 0.5f, position_z);
                     spawnRotation = Quaternion.identity;
                     Instantiate(hazard4, spawnPosition, spawnRotation);
-                }                
+                }
+                /**
+                 *  Another basic attack with misty effect
+                 * 
+                 */
+                else if (bossSpell == 4)
+                {
+                    //random_skip = 4 + (i/14)%6;
+
+                    if (i % 14 == 0)
+                    {
+
+                        if (randomSkipIncrease)
+                        {
+                            random_skip++;
+                            if (random_skip >= 12)
+                            {
+                                randomSkipIncrease = false;
+                            }
+                        }
+                        else
+                        {
+                            random_skip--;
+                            if (random_skip <= 3)
+                            {
+                                randomSkipIncrease = true;
+                            }
+                        }
+
+                        if (basicAttackTime2 > 0.15f)
+                        {
+                            //spell1_time -= (i/14)*0.1f;
+                            float attackRatio = (float)bosslife / (float)bossBasicLife;
+                            basicAttackTime2 = 2.5f * attackRatio;
+                        }
+                        if (basicAttackTime2 < 0.15f)
+                        {
+                            basicAttackTime2 = 0.15f;
+                        }
+                        yield return new WaitForSeconds(basicAttackTime2);
+                        source.PlayOneShot(bossAttack2);
+
+                    }
+
+                    if (i % 14 <= random_skip && i % 14 >= random_skip - 1)
+                    {
+                        //Debug.Log("should have this in time increase " + i/14);
+                        continue;
+                    }
+
+                    position_x = -7 + i % 14;
+                    position_z = 25;
+                    spawnPosition = new Vector3(position_x, 0.5f, position_z);
+                    spawnRotation = Quaternion.identity;
+                    Instantiate(hazard6, spawnPosition, spawnRotation);
+                }
                 /*
                  *  Spell card No1: (to be named)
                  *  rocks emerges under the water, player needs to dodge them base on the shadow shown on the water.
                  * 
                  */
+
                 else if (bossSpell == 3)
                 {
                     // generate 20 rocks to attack every time
@@ -332,7 +466,7 @@ public class GameController : MonoBehaviour {
                     //spawnPosition = new Vector3(position_x, spawnValues.y, position_z);
                     spawnRotation = Quaternion.identity;
                     Instantiate(hazard, spawnPosition, spawnRotation);
-                    
+
                 }
                 /*
                  *  This is the normal attack from the boss
@@ -342,10 +476,11 @@ public class GameController : MonoBehaviour {
                  */
                 else if (bossSpell == 2)
                 {
-                    
+
                     //random_skip = 4 + (i/14)%6;
-                    
-                    if (i % 14 == 0) {
+
+                    if (i % 14 == 0)
+                    {
 
                         if (randomSkipIncrease)
                         {
@@ -379,7 +514,7 @@ public class GameController : MonoBehaviour {
 
                     }
 
-                    if (i % 14 <= random_skip && i % 14 >= random_skip-1)
+                    if (i % 14 <= random_skip && i % 14 >= random_skip - 1)
                     {
                         //Debug.Log("should have this in time increase " + i/14);
                         continue;
@@ -410,7 +545,7 @@ public class GameController : MonoBehaviour {
                     spawnPosition = new Vector3(Random.Range(-7, 7), 0.5f, Random.Range(-7.5f, 7.5f));
                     spawnRotation = Quaternion.identity;
                     Instantiate(hazard3, spawnPosition, spawnRotation);
-                    
+
                 }
                 yield return new WaitForSeconds(spawnWait);
             }
@@ -514,24 +649,27 @@ public class GameController : MonoBehaviour {
         return (float)bosslife / (float)bossBasicLife;
     }
     private void updateSpellCardText() {
-        if (bossSpell == 6)
-        {
-            SpellCardName.text = "Test";
-        }else if(bossSpell == 5)
-        {
+        if (bossSpell == 7) {
             SpellCardName.text = "[Earth Spell] Natural Mosaic";
+        }
+        else if (bossSpell == 6)
+        {
+            SpellCardName.text = "Believer's Narrow Road";
+        } else if (bossSpell == 5)
+        {
+            SpellCardName.text = "[Earth Spell]The Great Refraction Wall";
         }
         else if (bossSpell == 4)
         {
-            SpellCardName.text = "The Great Refraction Wall";
+            SpellCardName.text = "Fogged Reality";
         }
         else if (bossSpell == 3)
         {
-            SpellCardName.text = "[Earth Spell] Rockarine";
+            SpellCardName.text = "[Earth Spell] Rockshark";
         }
         else if (bossSpell == 2)
         {
-            SpellCardName.text = "Earthutation";
+            SpellCardName.text = "Misty Cosmic Path";
         }
         else if (bossSpell == 1)
         {

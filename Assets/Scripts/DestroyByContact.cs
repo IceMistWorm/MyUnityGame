@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class DestroyByContact : MonoBehaviour {
 
-
-    public AudioClip playerDeath;
     public GameObject explosion;
     public GameObject playerExplosion;
     private GameController gameController;

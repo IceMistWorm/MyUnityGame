@@ -1902,11 +1902,19 @@ MonoBehaviour:
   hazard3: {fileID: 1744922444796238, guid: 130988a154da68641a834b7b5b39ea25, type: 2}
   hazard4: {fileID: 1167251444570476, guid: 03d3280761e0cc441bef50a554106c6d, type: 2}
   hazard5: {fileID: 1747045713423942, guid: dd0dcc7e60bc39c4ab4da924a1ae1d3c, type: 2}
+  hazard6: {fileID: 1858867397111392, guid: 8a8facf1928904e4cb62b2fc466c97a6, type: 2}
+  hazard7: {fileID: 1931837230549764, guid: 34da1b46ece66d845b670201b3c76f4e, type: 2}
+  mistyCosmicAttack: {fileID: 1159758754712550, guid: b2ad5d806438ae546804ed7f10cb50a5,
+    type: 2}
   greatMosaicWall: {fileID: 1995620508427674, guid: 60545941d38232b4abffdadd59d2e1a3,
     type: 2}
   bigAnnoyingBall: {fileID: 1550038332389120, guid: a9006ce07987ae44aa05f8e07011909f,
     type: 2}
   spellCardScene: {fileID: 644440819}
+  MistyEffect: {fileID: 1478858950791162, guid: 8f306e6862d81514d90313f8169ac01e,
+    type: 2}
+  MistyEffect2: {fileID: 1983538856179108, guid: 529dc7dfe69f6894b8020ccce180ed76,
+    type: 2}
   dirRedLight: {fileID: 1429798418}
   spawnValues: {x: 2, y: -20, z: 5}
   hazardCount: 14000
@@ -1921,6 +1929,7 @@ MonoBehaviour:
   bossDefeated: {fileID: 8300000, guid: acf97f7037feb2548a01ab498076bbd5, type: 3}
   playerDeath: {fileID: 8300000, guid: 21975e0bb40bf7046a9831aa11377569, type: 3}
   horn: {fileID: 8300000, guid: ef6ecc4dab0de814ba55491e1f213262, type: 3}
+  wave: {fileID: 8300000, guid: efcb5cb0020d48f4db4fda1ed6c7ca85, type: 3}
   bosslifeText: {fileID: 271611711}
   restartText: {fileID: 2027845385}
   gameoverText: {fileID: 881133532}
@@ -1929,7 +1938,7 @@ MonoBehaviour:
   SpellCardName: {fileID: 1918089152}
   robotImage: {fileID: 8676112}
   bosslife: 200
-  bossSpell: 4
+  bossSpell: 8
 --- !u!4 &1892536969
 Transform:
   m_ObjectHideFlags: 0
