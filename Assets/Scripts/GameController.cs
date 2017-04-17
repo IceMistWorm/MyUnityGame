@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
 
@@ -25,6 +26,8 @@ public class GameController : MonoBehaviour {
     public GUIText restartText;
     public GUIText gameoverText;
     public GUIText gameclearText;
+
+    public Slider BossHealthBar;
 
     public int bosslife;
     public int bossSpell;
@@ -107,7 +110,8 @@ public class GameController : MonoBehaviour {
                 accumulateTime = 0;
             }
         }
-        
+
+        BossHealthBar.value = calculateBossHealthRatio();
 
     }
 
@@ -435,4 +439,7 @@ public class GameController : MonoBehaviour {
         attackHitPlayer = v;
     }
 
+    private float calculateBossHealthRatio() {
+        return (float)bosslife / (float)bossBasicLife;
+    }
 }
