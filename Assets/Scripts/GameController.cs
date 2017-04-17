@@ -7,11 +7,14 @@ public class GameController : MonoBehaviour {
 
     public GameObject hazard, hazard2, hazard3, hazard4,hazard5;
     public GameObject greatMosaicWall, bigAnnoyingBall;
+    public GameObject spellCardScene;
+    public Light dirRedLight;
     public Vector3 spawnValues;
     public int hazardCount;
     public float spawnWait;
     public float startWait;
     public float waveWait;
+    
 
     public AudioClip bossSpellCard;
     public AudioClip bossBasicAttack1;
@@ -45,13 +48,14 @@ public class GameController : MonoBehaviour {
     private float basicAttackTime1 = 2.5f;
     private float spell1_time = 2.5f;
     private float spellRockWater = 2.5f;
-    private float spell3_time = 2.5f;
+    private float spell3_time = 4.5f;
     private float accumulateTime = 4.0f;
     private float bossSummonBallTime = 6.0f;
     private int bossBasicLife = 8000;
     private int bossPreviousSpell;
     private bool randomSkipIncrease = true;
     private bool attackHitPlayer = false;
+    private bool wallBuilt = false;
     private GameObject boss;
 
     void Start()
@@ -68,6 +72,7 @@ public class GameController : MonoBehaviour {
         StartCoroutine(SpawnWaves());
         bossPreviousSpell = bossSpell;
         boss = GameObject.FindGameObjectWithTag("Boss");
+ 
     }
 
     private void Awake()
@@ -93,8 +98,15 @@ public class GameController : MonoBehaviour {
                 GameOver();
             }
         }
-        if(bossSpell == 5)
+        if(bossSpell == 6)
         {
+            dirRedLight.enabled = false;
+            spellCardScene.SetActive(false);
+        }
+        else if(bossSpell == 5)
+        {
+            dirRedLight.enabled = true;
+            spellCardScene.SetActive(true);
             accumulateTime += Time.deltaTime;
             float attackRatio = (float)bosslife / (float)bossBasicLife;
             bossSummonBallTime = 6.0f * attackRatio;
@@ -110,7 +122,28 @@ public class GameController : MonoBehaviour {
                 Instantiate(bigAnnoyingBall, spawnPosition, spawnRotation);
                 accumulateTime = 0;
             }
+        }else if(bossSpell == 4)
+        {
+            dirRedLight.enabled = false;
+            spellCardScene.SetActive(false);
+
         }
+        else if (bossSpell == 3)
+        {
+            dirRedLight.enabled = true;
+            spellCardScene.SetActive(true);
+        }
+        else if (bossSpell == 2)
+        {
+            dirRedLight.enabled = false;
+            spellCardScene.SetActive(false);
+        }
+        else if (bossSpell == 1)
+        {
+            dirRedLight.enabled = true;
+            spellCardScene.SetActive(true);
+        }
+        
 
         BossHealthBar.value = calculateBossHealthRatio();
         updateSpellCardText();
@@ -159,7 +192,7 @@ public class GameController : MonoBehaviour {
 
                 if (bossPreviousSpell != bossSpell) {
                     bossPreviousSpell = bossSpell;
-                    yield return new WaitForSeconds(1.5f);
+                    yield return new WaitForSeconds(2.5f);
                     break;
                 }
 
@@ -207,6 +240,24 @@ public class GameController : MonoBehaviour {
                  */
 
                 else if (bossSpell == 4) {
+
+                    // entering the spell: the great mosaic wall
+                    if (!wallBuilt)
+                    {
+                        source.PlayOneShot(horn, 0.85f);
+                        yield return new WaitForSeconds(1.0f);
+                        wallBuilt = true;
+                        spawnRotation = Quaternion.identity;
+                        for (int j = 0; j < 5; j++)
+                        {
+                            for (int k = 0; k < 3; k++)
+                            {
+                                spawnPosition = new Vector3(-10 + j * 5, -5 + k * 5, 7);
+                                Instantiate(greatMosaicWall, spawnPosition, spawnRotation);
+                            }
+                        }
+                    }
+
                     if (i % 11 == 0)
                     {
                         source.PlayOneShot(bossBasicAttack1, 1f);
@@ -318,14 +369,14 @@ public class GameController : MonoBehaviour {
                 {
                     if (i % 25 == 0)
                     {
-                        if (spell3_time > 0.75f)
+                        if (spell3_time > 1f)
                         {
                             float attackRatio = (float)bosslife / (float)bossBasicLife;
-                            spell3_time = 2.5f * attackRatio;
+                            spell3_time = 4.5f * attackRatio;
                         }
-                        if (spell3_time < 0.75f)
+                        if (spell3_time < 1f)
                         {
-                            spell3_time = 0.75f;
+                            spell3_time = 1f;
                         }
                         yield return new WaitForSeconds(spell3_time);
                     }
@@ -366,22 +417,13 @@ public class GameController : MonoBehaviour {
             bosslife = bossBasicLife;
             setBossExplode(true);
             bossSpell--;
-            
+
             if (bossSpell > 0)
             {
                 source.PlayOneShot(bossSpellCard);
             }
-
-            // entering the spell: the great mosaic wall
-            if (bossSpell == 4) {
-                Vector3 spawnPosition;
-                Quaternion spawnRotation = Quaternion.identity;
-                for (int i = 0; i < 5; i++) {
-                    for (int j = 0; j < 3; j++) {
-                        spawnPosition = new Vector3(-10 + i * 5, -5+j*5, 7);
-                        Instantiate(greatMosaicWall, spawnPosition, spawnRotation);
-                    }
-                }
+            else {
+                bosslife = 0;
             }
         }
         UpdateBossLife();
@@ -412,7 +454,11 @@ public class GameController : MonoBehaviour {
 
     public void GameClear()
     {
+        SpellCardName.text = "";
+        Destroy(BossHealthBar);
         gameoverText.text = "Congratulation! Game Clear!";
+        spellCardScene.SetActive(false);
+        dirRedLight.enabled = false;
         source.PlayOneShot(bossDefeated, 0.5f);
         gameclear = true;
     }
