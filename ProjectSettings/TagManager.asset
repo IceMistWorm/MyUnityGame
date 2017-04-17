@@ -9,6 +9,7 @@ TagManager:
   - Attack
   - PlayerAttack
   - Boss
+  - Water
   layers:
   - Default
   - TransparentFX

@@ -29,6 +29,7 @@ GameObject:
   - component: {fileID: 114319517273209606}
   - component: {fileID: 114569605470335732}
   - component: {fileID: 82970634796354262}
+  - component: {fileID: 114342994665748508}
   m_Layer: 0
   m_Name: Rock1-1
   m_TagString: Attack
@@ -223,6 +224,19 @@ MonoBehaviour:
   explosion: {fileID: 1458369854421654, guid: fdade9c876470d141a41f92859b327dc, type: 2}
   playerExplosion: {fileID: 1133775582045018, guid: 6222a597d25c8fa4298c2291898fd6ce,
     type: 2}
+--- !u!114 &114342994665748508
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1944386496890762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6944080e4f3deb74794d2541cc002a12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waterSplash: {fileID: 1224866255812352, guid: 404fba39364abda45b19bd59e5921757,
+    type: 2}
 --- !u!114 &114447069923110538
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -257,7 +271,7 @@ CapsuleCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1944386496890762}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 2.43
   m_Height: 8.23
