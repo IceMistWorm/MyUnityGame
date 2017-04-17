@@ -32,6 +32,7 @@ public class GameController : MonoBehaviour {
 
     public Slider BossHealthBar;
     public Text SpellCardName;
+    public RawImage robotImage;
 
     public int bosslife;
     public int bossSpell;
@@ -49,7 +50,9 @@ public class GameController : MonoBehaviour {
     private float spell1_time = 2.5f;
     private float spellRockWater = 2.5f;
     private float spell3_time = 4.5f;
-    private float accumulateTime = 4.0f;
+    // use for spell card 5 to generate a mosaic ball every 6 sec
+    private float accumulateTime = 0.0f;
+
     private float bossSummonBallTime = 6.0f;
     private int bossBasicLife = 8000;
     private int bossPreviousSpell;
@@ -72,6 +75,9 @@ public class GameController : MonoBehaviour {
         StartCoroutine(SpawnWaves());
         bossPreviousSpell = bossSpell;
         boss = GameObject.FindGameObjectWithTag("Boss");
+        dirRedLight.enabled = false;
+        spellCardScene.SetActive(false);
+        robotImage.enabled = false;
  
     }
 
@@ -100,13 +106,13 @@ public class GameController : MonoBehaviour {
         }
         if(bossSpell == 6)
         {
-            dirRedLight.enabled = false;
-            spellCardScene.SetActive(false);
+            //dirRedLight.enabled = false;
+            //spellCardScene.SetActive(false);
         }
         else if(bossSpell == 5)
         {
-            dirRedLight.enabled = true;
-            spellCardScene.SetActive(true);
+            //dirRedLight.enabled = true;
+            //spellCardScene.SetActive(true);
             accumulateTime += Time.deltaTime;
             float attackRatio = (float)bosslife / (float)bossBasicLife;
             bossSummonBallTime = 6.0f * attackRatio;
@@ -124,29 +130,29 @@ public class GameController : MonoBehaviour {
             }
         }else if(bossSpell == 4)
         {
-            dirRedLight.enabled = false;
-            spellCardScene.SetActive(false);
+            //dirRedLight.enabled = false;
+            //spellCardScene.SetActive(false);
 
         }
         else if (bossSpell == 3)
         {
-            dirRedLight.enabled = true;
-            spellCardScene.SetActive(true);
+            //dirRedLight.enabled = true;
+            //spellCardScene.SetActive(true);
         }
         else if (bossSpell == 2)
         {
-            dirRedLight.enabled = false;
-            spellCardScene.SetActive(false);
+            //dirRedLight.enabled = false;
+            //spellCardScene.SetActive(false);
         }
         else if (bossSpell == 1)
         {
-            dirRedLight.enabled = true;
-            spellCardScene.SetActive(true);
+            //dirRedLight.enabled = true;
+            //spellCardScene.SetActive(true);
         }
         
 
         BossHealthBar.value = calculateBossHealthRatio();
-        updateSpellCardText();
+        
     }
 
     IEnumerator SpawnWaves()
@@ -177,6 +183,7 @@ public class GameController : MonoBehaviour {
             else if (waves == 4) {
                 newHazardCount = hazardCount;
             }
+
             for (int i = 0; i < newHazardCount; i++)
             {
                 
@@ -192,9 +199,28 @@ public class GameController : MonoBehaviour {
 
                 if (bossPreviousSpell != bossSpell) {
                     bossPreviousSpell = bossSpell;
+                    SpellCardName.text = "";
+                    if (bossSpell % 2 == 1)
+                    {
+                        yield return new WaitForSeconds(1.5f);
+                        updateSpellCardText();
+                        robotImage.enabled = true;
+                        source.PlayOneShot(bossSpellCard);
+                        dirRedLight.enabled = true;
+                        spellCardScene.SetActive(true);
+                    }
+                    else {                        
+                        dirRedLight.enabled = false;
+                        spellCardScene.SetActive(false);
+                        yield return new WaitForSeconds(2.5f);
+                        updateSpellCardText();
+                    }
                     yield return new WaitForSeconds(2.5f);
+                    
+                    robotImage.enabled = false;
                     break;
                 }
+
 
                 /*
                  *  This is the normal attack from the boss (before spell card 1)
@@ -367,7 +393,7 @@ public class GameController : MonoBehaviour {
                 }
                 else if (bossSpell == 1)
                 {
-                    if (i % 25 == 0)
+                    if (i % 20 == 0)
                     {
                         if (spell3_time > 1f)
                         {
@@ -379,11 +405,12 @@ public class GameController : MonoBehaviour {
                             spell3_time = 1f;
                         }
                         yield return new WaitForSeconds(spell3_time);
+                        source.PlayOneShot(bossAttack3, 0.7f);
                     }
                     spawnPosition = new Vector3(Random.Range(-7, 7), 0.5f, Random.Range(-7.5f, 7.5f));
                     spawnRotation = Quaternion.identity;
                     Instantiate(hazard3, spawnPosition, spawnRotation);
-                    source.PlayOneShot(bossAttack3,0.3f);
+                    
                 }
                 yield return new WaitForSeconds(spawnWait);
             }
@@ -417,12 +444,8 @@ public class GameController : MonoBehaviour {
             bosslife = bossBasicLife;
             setBossExplode(true);
             bossSpell--;
-
-            if (bossSpell > 0)
-            {
-                source.PlayOneShot(bossSpellCard);
-            }
-            else {
+            source.PlayOneShot(bossDefeated, 0.2f);
+            if (bossSpell==0){
                 bosslife = 0;
             }
         }
@@ -500,7 +523,7 @@ public class GameController : MonoBehaviour {
         }
         else if (bossSpell == 4)
         {
-            SpellCardName.text = "[Earth Spell] Nature Refraction";
+            SpellCardName.text = "The Great Refraction Wall";
         }
         else if (bossSpell == 3)
         {
@@ -508,7 +531,7 @@ public class GameController : MonoBehaviour {
         }
         else if (bossSpell == 2)
         {
-            SpellCardName.text = "[Earth Spell] Earthutation";
+            SpellCardName.text = "Earthutation";
         }
         else if (bossSpell == 1)
         {
