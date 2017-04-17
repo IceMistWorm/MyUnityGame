@@ -454,7 +454,7 @@ public class GameController : MonoBehaviour {
         }
         else if (bossSpell == 4)
         {
-            SpellCardName.text = "[Earth Spell] Refraction of the Nature";
+            SpellCardName.text = "[Earth Spell] Nature Refraction";
         }
         else if (bossSpell == 3)
         {
@@ -462,7 +462,7 @@ public class GameController : MonoBehaviour {
         }
         else if (bossSpell == 2)
         {
-            SpellCardName.text = "";
+            SpellCardName.text = "[Earth Spell] Earthutation";
         }
         else if (bossSpell == 1)
         {
