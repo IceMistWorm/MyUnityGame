@@ -28,6 +28,7 @@ public class GameController : MonoBehaviour {
     public GUIText gameclearText;
 
     public Slider BossHealthBar;
+    public Text SpellCardName;
 
     public int bosslife;
     public int bossSpell;
@@ -112,7 +113,7 @@ public class GameController : MonoBehaviour {
         }
 
         BossHealthBar.value = calculateBossHealthRatio();
-
+        updateSpellCardText();
     }
 
     IEnumerator SpawnWaves()
@@ -365,6 +366,7 @@ public class GameController : MonoBehaviour {
             bosslife = bossBasicLife;
             setBossExplode(true);
             bossSpell--;
+            
             if (bossSpell > 0)
             {
                 source.PlayOneShot(bossSpellCard);
@@ -441,5 +443,30 @@ public class GameController : MonoBehaviour {
 
     private float calculateBossHealthRatio() {
         return (float)bosslife / (float)bossBasicLife;
+    }
+    private void updateSpellCardText() {
+        if (bossSpell == 6)
+        {
+            SpellCardName.text = "Test";
+        }else if(bossSpell == 5)
+        {
+            SpellCardName.text = "[Earth Spell] Natural Mosaic";
+        }
+        else if (bossSpell == 4)
+        {
+            SpellCardName.text = "[Earth Spell] Refraction of the Nature";
+        }
+        else if (bossSpell == 3)
+        {
+            SpellCardName.text = "[Earth Spell] Rockarine";
+        }
+        else if (bossSpell == 2)
+        {
+            SpellCardName.text = "";
+        }
+        else if (bossSpell == 1)
+        {
+            SpellCardName.text = "[Thunder Spell] Particle Overflow";
+        }
     }
 }
