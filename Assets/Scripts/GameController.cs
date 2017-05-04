@@ -5,8 +5,9 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
 
-    public GameObject hazard, hazard2, hazard3, hazard4,hazard5,hazard6,hazard7,mistyCosmicAttack;
+    public GameObject hazard, hazard2, hazard3, hazard4,hazard5,hazard6,hazard7,hazard8,mistyCosmicAttack;
     public GameObject greatMosaicWall, bigAnnoyingBall;
+    public GameObject laserBall;
     public GameObject spellCardScene;
     public GameObject MistyEffect,MistyEffect2;
     public Light dirRedLight;
@@ -64,6 +65,7 @@ public class GameController : MonoBehaviour {
     private bool randomSkipIncrease = true;
     private bool attackHitPlayer = false;
     private bool wallBuilt = false;
+    private bool spell7LaserBallBuilt = false;
     private GameObject boss;
 
     void Start()
@@ -83,7 +85,7 @@ public class GameController : MonoBehaviour {
         dirRedLight.enabled = false;
         spellCardScene.SetActive(false);
         robotImage.enabled = false;
- 
+        updateSpellCardText();
     }
 
     private void Awake()
@@ -93,6 +95,7 @@ public class GameController : MonoBehaviour {
 
     void Update()
     {
+        // game restart
         if (restart)
         {
             if (Input.GetKeyDown(KeyCode.R))
@@ -100,6 +103,7 @@ public class GameController : MonoBehaviour {
                 UnityEngine.SceneManagement.SceneManager.LoadScene(0);
             }
         }
+        // if attack hit the player
         if (attackHitPlayer) {
             attackHitPlayer = false;
             //Destroy(GameObject.FindGameObjectWithTag("Player"));
@@ -109,6 +113,7 @@ public class GameController : MonoBehaviour {
                 //GameOver();
             }
         }
+
         if(bossSpell == 7)
         {
             //dirRedLight.enabled = true;
@@ -128,6 +133,20 @@ public class GameController : MonoBehaviour {
                 Instantiate(bigAnnoyingBall, spawnPosition, spawnRotation);
                 accumulateTime = 0;
             }
+
+            if (!spell7LaserBallBuilt && accumulateTime >= 4.0f)
+            {
+                spell7LaserBallBuilt = true;
+                source.PlayOneShot(horn, 0.85f);
+                Quaternion spawnRotation = Quaternion.identity;
+                Vector3 spawnPosition1 = new Vector3(0.0f, 1.0f, 15.0f);
+                Vector3 spawnPosition2 = new Vector3(10.0f, 1.0f, 15.0f);
+                Vector3 spawnPosition3 = new Vector3(-10.0f, 1.0f, 15.0f);
+                Instantiate(laserBall, spawnPosition1, spawnRotation);
+                Instantiate(laserBall, spawnPosition2, spawnRotation);
+                Instantiate(laserBall, spawnPosition3, spawnRotation);
+            }
+
         }
         else if(bossSpell == 6)
         {
@@ -188,26 +207,7 @@ public class GameController : MonoBehaviour {
         waves = 0;
         while (true)
         {
-
-            if (waves == 0)
-            {
-                newHazardCount = hazardCount;
-            }
-            else if (waves == 1)
-            {
-                newHazardCount = hazardCount;
-            }
-            else if (waves == 2)
-            {
-                newHazardCount = hazardCount;
-            }
-            else if (waves == 3)
-            {
-                newHazardCount = hazardCount;
-            }
-            else if (waves == 4) {
-                newHazardCount = hazardCount;
-            }
+            newHazardCount = hazardCount;
 
             for (int i = 0; i < newHazardCount; i++)
             {
@@ -259,7 +259,7 @@ public class GameController : MonoBehaviour {
                 */
                 if (bossSpell == 7)
                 {
-                    if (i % 11 == 0)
+                    if (i % 5 == 0)
                     {
                         source.PlayOneShot(bossBasicAttack1, 1f);
                         if (basicAttackTime1 > 0.75f)
@@ -649,10 +649,13 @@ public class GameController : MonoBehaviour {
         return (float)bosslife / (float)bossBasicLife;
     }
     private void updateSpellCardText() {
-        if (bossSpell == 7) {
+        if (bossSpell == 6) {
+
+        }
+        else if (bossSpell == 7) {
             SpellCardName.text = "[Earth Spell] Natural Mosaic";
         }
-        else if (bossSpell == 6)
+        else if (bossSpell == 8)
         {
             SpellCardName.text = "Believer's Narrow Road";
         } else if (bossSpell == 5)
