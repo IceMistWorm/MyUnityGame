@@ -72,6 +72,8 @@ public class GameController : MonoBehaviour {
     private GameObject boss;
     private bool triggerPlayerDeath = false;
     private float playerDeathTime = 3.0f;
+    private bool protectionActive = false;
+    private float cannotDeathTime = 2.5f;
 
     void Start()
     {
@@ -112,7 +114,7 @@ public class GameController : MonoBehaviour {
         if (attackHitPlayer) {
             attackHitPlayer = false;
             //Destroy(GameObject.FindGameObjectWithTag("Player"));
-            if (!triggerPlayerDeath)
+            if (!triggerPlayerDeath && !protectionActive)
             {
                 triggerPlayerDeath = true;
                 source.PlayOneShot(playerDeath);
@@ -122,22 +124,37 @@ public class GameController : MonoBehaviour {
                 }
             }
         }
+        //
 
-        if(bossSpell == 7)
+        if (protectionActive)
+        {
+            cannotDeathTime -= Time.deltaTime;
+            if (cannotDeathTime <= 0.0f)
+            {
+                protectionActive = false;
+                cannotDeathTime = 2.5f;
+            }
+        }
+        if (Input.GetKey("x") && !protectionActive)
+        {
+            protectionActive = true;
+        }
+
+        if (bossSpell == 7)
         {
             //dirRedLight.enabled = true;
             //spellCardScene.SetActive(true);
             accumulateTime += Time.deltaTime;
             float attackRatio = (float)bosslife / (float)bossBasicLife;
             bossSummonBallTime = 6.0f * attackRatio;
-            if (bossSummonBallTime <= 3.0f)
+            if (bossSummonBallTime <= 1.0f)
             {
-                bossSummonBallTime = 3.0f;
+                bossSummonBallTime = 1.0f;
             }
             if (accumulateTime >= bossSummonBallTime)
             {
                 source.PlayOneShot(horn, 0.85f);
-                Vector3 spawnPosition = new Vector3(boss.transform.position.x, boss.transform.position.y, boss.transform.position.z);
+                Vector3 spawnPosition = new Vector3(boss.transform.position.x, boss.transform.position.y +20 , boss.transform.position.z-10);
                 Quaternion spawnRotation = Quaternion.identity;
                 Instantiate(bigAnnoyingBall, spawnPosition, spawnRotation);
                 accumulateTime = 0;
@@ -752,8 +769,14 @@ public class GameController : MonoBehaviour {
         attackHitPlayer = v;
     }
 
-    public bool getTriggerPlayerDeath() {
+    public bool getTriggerPlayerDeath()
+    {
         return triggerPlayerDeath;
+    }
+
+    public bool getProtectionActive()
+    {
+        return protectionActive;
     }
 
 

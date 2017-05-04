@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour {
     public float speed;
     public float tilt;
     public Boundary boundary;
+    public GameObject protection;
 
     public GameObject shot;
     public Transform shotSpawn;
@@ -20,7 +21,8 @@ public class PlayerController : MonoBehaviour {
 
     private float nextFire;
     private Rigidbody rb;
-
+    private bool protectionActive = false;
+    private float cannotDeathTime = 2.5f;
 
     void Start()
     {
@@ -29,10 +31,27 @@ public class PlayerController : MonoBehaviour {
 
     void Update()
     {
+        if (protectionActive)
+        {
+            cannotDeathTime -= Time.deltaTime;
+            if (cannotDeathTime <= 0.0f)
+            {
+                protectionActive = false;
+                protection.SetActive(false);
+                cannotDeathTime = 2.5f;
+            }
+        }
+
         if (Input.GetKey("z") && Time.time > nextFire)
         {
             nextFire = Time.time + fireRate;
             Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+        }
+
+        if (Input.GetKey("x") && !protectionActive)
+        {
+            protectionActive = true;
+            protection.SetActive(true);
         }
     }
 
@@ -51,4 +70,5 @@ public class PlayerController : MonoBehaviour {
         );
         rb.rotation = Quaternion.Euler(0.0f, 0.0f, (rb.velocity.x * -tilt));
     }
+
 }

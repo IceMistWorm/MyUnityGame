@@ -110,8 +110,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speedX: 0
-  speedZ: -2
-  speedY: 0
+  speedZ: 0
+  speedY: -5
 --- !u!114 &114993587511992130
 MonoBehaviour:
   m_ObjectHideFlags: 1

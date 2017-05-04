@@ -19,7 +19,6 @@ public class LaserShot : MonoBehaviour
     Vector3 laserEnd;
     private bool shotSignal = false;
     private bool laserDeath = false;
-    private bool playSound = false;
     private float accumulateTime = 0.0f;
 
     void Start()
@@ -77,7 +76,7 @@ public class LaserShot : MonoBehaviour
                     if (hit[i].collider.tag == "Player")
                     {
                         laserDeath = true;
-                        if (!gameController.getTriggerPlayerDeath())
+                        if (!gameController.getTriggerPlayerDeath() && !gameController.getProtectionActive())
                         {
                             Instantiate(playerExplosion, player.transform.position, player.transform.rotation);
                             gameController.setAttackHitPlayer(true);
