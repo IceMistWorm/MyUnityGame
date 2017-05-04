@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
 
-    public GameObject hazard, hazard2, hazard3, hazard4,hazard5,hazard6,hazard7,hazard8,mistyCosmicAttack;
+    public GameObject hazard, hazard2, hazard3, hazard4,hazard5,hazard6,hazard7,hazard8,mistyCosmicAttack, mistyCosmicAttack2;
     public GameObject greatMosaicWall, bigAnnoyingBall;
-    public GameObject laserBall;
+    public GameObject laserBall,laserBall2;
     public GameObject spellCardScene;
-    public GameObject MistyEffect,MistyEffect2;
+    public GameObject MistyEffect,MistyEffect2, MistyEffect3;
     public Light dirRedLight;
     public Vector3 spawnValues;
     public int hazardCount;
@@ -66,7 +66,10 @@ public class GameController : MonoBehaviour {
     private bool attackHitPlayer = false;
     private bool wallBuilt = false;
     private bool spell7LaserBallBuilt = false;
+    private bool spell2LaserBallBuilt = false;
     private GameObject boss;
+    private bool triggerPlayerDeath = false;
+    private float playerDeathTime = 3.0f;
 
     void Start()
     {
@@ -107,10 +110,14 @@ public class GameController : MonoBehaviour {
         if (attackHitPlayer) {
             attackHitPlayer = false;
             //Destroy(GameObject.FindGameObjectWithTag("Player"));
-            source.PlayOneShot(playerDeath);
-            if (isGameClear() == false)
+            if (!triggerPlayerDeath)
             {
-                //GameOver();
+                triggerPlayerDeath = true;
+                source.PlayOneShot(playerDeath);
+                if (isGameClear() == false)
+                {
+                    //GameOver();
+                }
             }
         }
 
@@ -133,20 +140,22 @@ public class GameController : MonoBehaviour {
                 Instantiate(bigAnnoyingBall, spawnPosition, spawnRotation);
                 accumulateTime = 0;
             }
-
+            /*
             if (!spell7LaserBallBuilt && accumulateTime >= 4.0f)
             {
                 spell7LaserBallBuilt = true;
                 source.PlayOneShot(horn, 0.85f);
                 Quaternion spawnRotation = Quaternion.identity;
-                Vector3 spawnPosition1 = new Vector3(0.0f, 1.0f, 15.0f);
+                Vector3 spawnPosition1 = new Vector3(3.3f, 1.0f, 15.0f);
                 Vector3 spawnPosition2 = new Vector3(10.0f, 1.0f, 15.0f);
-                Vector3 spawnPosition3 = new Vector3(-10.0f, 1.0f, 15.0f);
+                Vector3 spawnPosition3 = new Vector3(-3.3f, 1.0f, 15.0f);
+                Vector3 spawnPosition4 = new Vector3(10.0f, 1.0f, 15.0f);
                 Instantiate(laserBall, spawnPosition1, spawnRotation);
                 Instantiate(laserBall, spawnPosition2, spawnRotation);
                 Instantiate(laserBall, spawnPosition3, spawnRotation);
+                Instantiate(laserBall, spawnPosition4, spawnRotation);
             }
-
+            */
         }
         else if(bossSpell == 6)
         {
@@ -160,8 +169,21 @@ public class GameController : MonoBehaviour {
         }
         else if(bossSpell == 4)
         {
-            //dirRedLight.enabled = false;
-            //spellCardScene.SetActive(false);
+            accumulateTime += Time.deltaTime;
+            float attackRatio = (float)bosslife / (float)bossBasicLife;
+            bossSummonBallTime = 4.0f * attackRatio;
+            if (bossSummonBallTime <= 1.0f)
+            {
+                bossSummonBallTime = 1.0f;
+            }
+            if (accumulateTime >= bossSummonBallTime)
+            {
+                source.PlayOneShot(wave, 0.85f);
+                Vector3 spawnPosition = new Vector3(boss.transform.position.x, 0.5f, boss.transform.position.z);
+                Quaternion spawnRotation = Quaternion.identity;
+                Instantiate(mistyCosmicAttack, spawnPosition, spawnRotation);
+                accumulateTime = 0;
+            }
 
         }
         else if (bossSpell == 3)
@@ -184,8 +206,21 @@ public class GameController : MonoBehaviour {
                 source.PlayOneShot(wave, 0.85f);
                 Vector3 spawnPosition = new Vector3(boss.transform.position.x, 0.5f, boss.transform.position.z);
                 Quaternion spawnRotation = Quaternion.identity;
-                Instantiate(mistyCosmicAttack, spawnPosition, spawnRotation);
+                Instantiate(mistyCosmicAttack2, spawnPosition, spawnRotation);
                 accumulateTime = 0;
+            }
+            if (!spell2LaserBallBuilt && accumulateTime >= 2.0f)
+            {
+                spell2LaserBallBuilt = true;
+                source.PlayOneShot(horn, 0.85f);
+                Quaternion spawnRotation = Quaternion.identity;
+                Vector3 spawnPosition1 = new Vector3(0.0f, 1.0f, 15.0f);
+                Vector3 spawnPosition2 = new Vector3(-10.0f, 1.0f, 15.0f);
+                Vector3 spawnPosition3 = new Vector3(10.0f, 1.0f, 15.0f);
+                Instantiate(laserBall2, spawnPosition1, spawnRotation);
+                Instantiate(laserBall2, spawnPosition2, spawnRotation);
+                Instantiate(laserBall2, spawnPosition3, spawnRotation);
+
             }
         }
         else if (bossSpell == 1)
@@ -196,7 +231,17 @@ public class GameController : MonoBehaviour {
         
 
         BossHealthBar.value = calculateBossHealthRatio();
-        
+        if (triggerPlayerDeath && playerDeathTime>0.0f)
+        {
+            playerDeathTime -= Time.deltaTime;
+        }else if (triggerPlayerDeath)
+        {
+            triggerPlayerDeath = false;
+        }
+        else
+        {
+            playerDeathTime = 3.0f;
+        }
     }
 
     IEnumerator SpawnWaves()
@@ -225,6 +270,8 @@ public class GameController : MonoBehaviour {
                 if (bossPreviousSpell != bossSpell) {
                     bossPreviousSpell = bossSpell;
                     SpellCardName.text = "";
+                    basicAttackTime3 = 3.5f;
+                    basicAttackTime1 = 3.5f;
                     if (bossSpell==1 || bossSpell == 3 || bossSpell == 5 || bossSpell == 7)
                     {
                         yield return new WaitForSeconds(1.5f);
@@ -246,18 +293,45 @@ public class GameController : MonoBehaviour {
                     }else if (bossSpell == 4)
                     {
                         Instantiate(MistyEffect2);
+                    }else if (bossSpell == 6)
+                    {
+                        //Instantiate(MistyEffect3);
                     }
                     robotImage.enabled = false;
                     break;
                 }
 
 
+
                 
+                if (bossSpell == 8)
+                {
+                    int genRndBalls = 5;
+                    if (i % genRndBalls == 0)
+                    {
+                        source.PlayOneShot(horn, 0.8f);
+                        if (basicAttackTime3 > 0.75f)
+                        {
+                            float attackRatio = (float)bosslife / (float)bossBasicLife;
+                            basicAttackTime3 = 3.5f * attackRatio;
+                        }
+                        if (basicAttackTime3 < 0.75f)
+                        {
+                            basicAttackTime3 = 0.75f;
+                        }
+                        genRndBalls = (int)Random.Range(3,8);
+                        yield return new WaitForSeconds(basicAttackTime3);
+                    }
+                    position_x = Random.Range(-10, 10);
+                    spawnPosition = new Vector3(position_x, 1.0f, 15.0f);
+                    spawnRotation = Quaternion.identity;
+                    Instantiate(hazard8, spawnPosition, spawnRotation);
+                }
                 /**
                 *   Boss Spell Card: Big annoy ball
                 *
                 */
-                if (bossSpell == 7)
+                else if (bossSpell == 7)
                 {
                     if (i % 5 == 0)
                     {
@@ -528,12 +602,12 @@ public class GameController : MonoBehaviour {
                 }
                 else if (bossSpell == 1)
                 {
-                    if (i % 20 == 0)
+                    if (i % 40 == 0)
                     {
                         if (spell3_time > 1f)
                         {
                             float attackRatio = (float)bosslife / (float)bossBasicLife;
-                            spell3_time = 4.5f * attackRatio;
+                            spell3_time = 3.5f * attackRatio;
                         }
                         if (spell3_time < 1f)
                         {
@@ -645,17 +719,22 @@ public class GameController : MonoBehaviour {
         attackHitPlayer = v;
     }
 
+    public bool getTriggerPlayerDeath() {
+        return triggerPlayerDeath;
+    }
+
+
     private float calculateBossHealthRatio() {
         return (float)bosslife / (float)bossBasicLife;
     }
     private void updateSpellCardText() {
-        if (bossSpell == 6) {
-
+        if (bossSpell == 8) {
+            SpellCardName.text = "";
         }
         else if (bossSpell == 7) {
             SpellCardName.text = "[Earth Spell] Natural Mosaic";
         }
-        else if (bossSpell == 8)
+        else if (bossSpell == 6)
         {
             SpellCardName.text = "Believer's Narrow Road";
         } else if (bossSpell == 5)

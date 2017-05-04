@@ -138,7 +138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffdc77fc51614784f9ed9d945fa583cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spellIndicator: 6
+  spellIndicator: 8
   explosion: {fileID: 1458369854421654, guid: fdade9c876470d141a41f92859b327dc, type: 2}
 --- !u!114 &114757765044823004
 MonoBehaviour:

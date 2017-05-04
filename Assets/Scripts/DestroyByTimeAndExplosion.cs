@@ -37,8 +37,11 @@ public class DestroyByTimeAndExplosion : MonoBehaviour
                 Instantiate(explosion, transform.position, transform.rotation);
                 if (dist < 1)
                 {
-                    gameController.setAttackHitPlayer(true);
-                    Instantiate(playerExplosion, gamePlayer.transform.position, gamePlayer.transform.rotation);
+                    if (!gameController.getTriggerPlayerDeath())
+                    {
+                        gameController.setAttackHitPlayer(true);
+                        Instantiate(playerExplosion, gamePlayer.transform.position, gamePlayer.transform.rotation);
+                    }
                 }
             }
             Destroy(gameObject);

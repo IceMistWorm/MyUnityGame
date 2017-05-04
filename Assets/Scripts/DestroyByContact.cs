@@ -32,8 +32,11 @@ public class DestroyByContact : MonoBehaviour {
         Instantiate(explosion, transform.position, transform.rotation);
         if (other.tag == "Player")
         {
-            Instantiate(playerExplosion, other.transform.position, other.transform.rotation);
-            gameController.setAttackHitPlayer(true);            
+            if (!gameController.getTriggerPlayerDeath())
+            {
+                Instantiate(playerExplosion, other.transform.position, other.transform.rotation);
+                gameController.setAttackHitPlayer(true);
+            }            
         }
         Destroy(gameObject);
     }

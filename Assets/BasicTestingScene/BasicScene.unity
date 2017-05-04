@@ -253,6 +253,7 @@ RectTransform:
   - {fileID: 1957243442}
   - {fileID: 1918089151}
   - {fileID: 8676111}
+  - {fileID: 1624181862}
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1640,6 +1641,87 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 780611a67e8e941a2b3aa96e5915a793, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1624181861
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1624181862}
+  - component: {fileID: 1624181865}
+  - component: {fileID: 1624181864}
+  - component: {fileID: 1624181863}
+  m_Layer: 5
+  m_Name: SpellCardSymbol8
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1624181862
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1624181861}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.099999994, y: 0.099999994, z: 0.099999994}
+  m_Children: []
+  m_Father: {fileID: 97452136}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -259.97, y: 259.98}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1624181863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1624181861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce3c9bfbbd203ac49b48ac8b99bd484e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spellIndicator: 8
+--- !u!114 &1624181864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1624181861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 2100000, guid: de82450b290629a4d81d69f90e5ad68d, type: 2}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &1624181865
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1624181861}
 --- !u!1 &1717065687
 GameObject:
   m_ObjectHideFlags: 0
@@ -1908,16 +1990,23 @@ MonoBehaviour:
   hazard5: {fileID: 1747045713423942, guid: dd0dcc7e60bc39c4ab4da924a1ae1d3c, type: 2}
   hazard6: {fileID: 1858867397111392, guid: 8a8facf1928904e4cb62b2fc466c97a6, type: 2}
   hazard7: {fileID: 1931837230549764, guid: 34da1b46ece66d845b670201b3c76f4e, type: 2}
+  hazard8: {fileID: 1805951516149542, guid: 9e77687523c098042bb47b94e959204b, type: 2}
   mistyCosmicAttack: {fileID: 1159758754712550, guid: b2ad5d806438ae546804ed7f10cb50a5,
+    type: 2}
+  mistyCosmicAttack2: {fileID: 1738947873227002, guid: 0f621235041a39b48b6bdd8b27b0db78,
     type: 2}
   greatMosaicWall: {fileID: 1995620508427674, guid: 60545941d38232b4abffdadd59d2e1a3,
     type: 2}
   bigAnnoyingBall: {fileID: 1550038332389120, guid: a9006ce07987ae44aa05f8e07011909f,
     type: 2}
+  laserBall: {fileID: 1059612916120094, guid: f88c166d0a38c93408ac166db0c1afef, type: 2}
+  laserBall2: {fileID: 1576076077591252, guid: ac77cdd41ed89d8449070a1bc3f19414, type: 2}
   spellCardScene: {fileID: 644440819}
   MistyEffect: {fileID: 1478858950791162, guid: 8f306e6862d81514d90313f8169ac01e,
     type: 2}
   MistyEffect2: {fileID: 1983538856179108, guid: 529dc7dfe69f6894b8020ccce180ed76,
+    type: 2}
+  MistyEffect3: {fileID: 1520978431940338, guid: 2137d0966ca1bf948af5e56776db5a04,
     type: 2}
   dirRedLight: {fileID: 1429798418}
   spawnValues: {x: 2, y: -20, z: 5}
@@ -1941,7 +2030,7 @@ MonoBehaviour:
   BossHealthBar: {fileID: 1855977142}
   SpellCardName: {fileID: 1918089152}
   robotImage: {fileID: 8676112}
-  bosslife: 200
+  bosslife: 8000
   bossSpell: 8
 --- !u!4 &1892536969
 Transform:

@@ -10,6 +10,8 @@ public class LaserShot : MonoBehaviour
     LineRenderer line;
     public Material lineMaterial;
     public GameObject playerExplosion;
+    public float laserTime;
+    public float laserStartTime;
 
     private GameObject player;
     private GameController gameController;
@@ -17,6 +19,7 @@ public class LaserShot : MonoBehaviour
     Vector3 laserEnd;
     private bool shotSignal = false;
     private bool laserDeath = false;
+    private bool playSound = false;
     private float accumulateTime = 0.0f;
 
     void Start()
@@ -32,15 +35,16 @@ public class LaserShot : MonoBehaviour
         gameController = gameControllerObject.GetComponent<GameController>();
     }
 
+
     void Update()
     {
         accumulateTime += Time.deltaTime;
-        if (accumulateTime >= 3.0f && accumulateTime < 5.0f)
+        if (accumulateTime >= laserStartTime && accumulateTime < laserTime)
         {
 
             if (!shotSignal)
             {
-                
+
                 line.startWidth = 0.05f;
                 line.endWidth = 0.05f;
                 laserStart = transform.position;
@@ -48,15 +52,16 @@ public class LaserShot : MonoBehaviour
                 Vector3 laserDirection = laserEnd - laserStart;
                 laserEnd = laserStart + 3.5f * laserDirection;
                 laserEnd.y = 1f;
-                Debug.Log("laser end: " + laserEnd + " laser start: " + laserStart);
+                //Debug.Log("laser end: " + laserEnd + " laser start: " + laserStart);
                 line.SetPosition(0, transform.position);
                 line.SetPosition(1, laserEnd);
                 shotSignal = true;
                 line.enabled = true;
             }
 
-        }else if (accumulateTime >= 5.0f && accumulateTime < 7.0f)
+        } else if (accumulateTime >= laserTime && accumulateTime < (laserTime + 2.0f))
         {
+           
             if (!laserDeath)
             {
                 
@@ -68,18 +73,21 @@ public class LaserShot : MonoBehaviour
                 for (int i = 0; i < size; i++)
                 {
                     //Debug.Log("we hit something " + hit[i].collider.tag);
-                    Debug.Log("laser start: " + laserStart.y + " laser direction: " + laserDirection.y);
+                    //Debug.Log("laser start: " + laserStart.y + " laser direction: " + laserDirection.y);
                     if (hit[i].collider.tag == "Player")
                     {
                         laserDeath = true;
-                        Instantiate(playerExplosion, player.transform.position, player.transform.rotation);
-                        gameController.setAttackHitPlayer(true);
+                        if (!gameController.getTriggerPlayerDeath())
+                        {
+                            Instantiate(playerExplosion, player.transform.position, player.transform.rotation);
+                            gameController.setAttackHitPlayer(true);
+                        }
                     }
                 }
             }
                 
         }
-        else if(accumulateTime >= 7.0f)
+        else if(accumulateTime >= (laserTime + 2.0f))
         {
             laserDeath = false;
             line.enabled = false;
