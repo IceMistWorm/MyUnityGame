@@ -1995,6 +1995,8 @@ MonoBehaviour:
     type: 2}
   mistyCosmicAttack2: {fileID: 1738947873227002, guid: 0f621235041a39b48b6bdd8b27b0db78,
     type: 2}
+  mistyCosmicAttack3: {fileID: 1692170783563328, guid: b2ceb98bfa1ddfc4ba1fe2701e71940c,
+    type: 2}
   greatMosaicWall: {fileID: 1995620508427674, guid: 60545941d38232b4abffdadd59d2e1a3,
     type: 2}
   bigAnnoyingBall: {fileID: 1550038332389120, guid: a9006ce07987ae44aa05f8e07011909f,
