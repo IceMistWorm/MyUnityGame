@@ -28,7 +28,7 @@ Credits from proposal (used for CSC562 grading):
 0. properly turn in : (5%)
     The project is properly turned in on this page.
 1. Basic Scene Setup :(10%)
-    There is a player and a boss in the scene. The boss has a life bar, and spell indicator on the left, spell card's name on the right.
+    There is a player and a boss in the scene. The boss has a life bar, and spell indicator on the left, spell card's name on the right. Player's life and score are shown on the bottom of the page.
 2. COMPONENT/EFFECT: basic attack (15%)
     press z for basic attack, press x for protection charm. Before entering a spell card (in which the main background will be turn red),       boss has some simple attack. In the spell card, several CG technique will be used (will be mentioned below)
 3. COMPONENT/EFFECT: shadow (25%)
