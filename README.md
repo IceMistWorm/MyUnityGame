@@ -32,7 +32,7 @@ Credits from proposal (used for CSC562 grading):
 2. COMPONENT/EFFECT: basic attack (15%)
     press z for basic attack, press x for protection charm. Before entering a spell card (in which the main background will be turn red),       boss has some simple attack. In the spell card, several CG technique will be used (will be mentioned below)
 3. COMPONENT/EFFECT: shadow (25%)
-    All objects in the scene are having shadow. To be more specific, in stage 2 ([Earth Spell] Natural Mosaic), several balls will fall         down from the sky. Player can see the shadow (although not very obvious because of red background and they are transparent in some         degree) to dodge the attack from the sky.(Although they are designed to be harmless)
+    All objects in the scene are having shadow. To be more specific, in stage 2 ([Earth Spell] Natural Mosaic), several balls will fall         down from the sky. Player can see the shadow (although not very obvious because of red light background) to dodge the attack from the sky.(Mosaic balls are designed to be harmless while the iron balls are harmful.)
 4. COMPONENT/EFFECT: explosion (20%)
     Player death would generate some explosion. (It can be easily observed if the player collide with rocks or lasers) Furthermore, in the final stage ([Thunder Spell] Particle Overflow), this shows some kinds of explosion attack.
 5. COMPONENT/EFFECT: refraction (25%)
