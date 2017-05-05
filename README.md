@@ -1,28 +1,26 @@
-# MyUnityGame
+# Introduction
 
-This project is a final project for CSC562 in NCSU
-I host this game on another website, to play this on the web, please visit the link below:
+This project is a final project for CSC562 in NCSU, it is a demo reel combining several effects in the game engine.
+I host this game on another website, to play this game, please visit the link below:
 
 https://digtorio.itch.io/shooting-star?secret=lAFbTDpTijGWbbrjTxcbKvW13Xs
 
-Please allow 30~60 seconds for loading the game.
-And playing in full screen is suggested.
+Please allow 30~60 seconds for loading the game,and playing in full screen is suggested.
 
+# Screencast
 Sample screencast for this game can be found below:
 
 https://drive.google.com/file/d/0B4IIm1ziXVY-NkgtT0hfRjUwSWM/view?usp=sharing
 
 https://drive.google.com/file/d/0B4IIm1ziXVY-MF9PVFltU0tzVnM/view?usp=sharing
 
-Game Contorll Instruction:
+# Game Contorll Instruction (Direction):
 
 To play the game, you can either use arrow key or use wasd key to move the player back and forth. 
 To attack the boss (the robot keep moving in front of you), simply press z to shoot some stars.
-To prevent from attack from the boss, please press x to open a protection charm.
+To prevent from attack from the boss, please press x to open a protection charm. However, if you cannot open a protection charm if your score is 0 and open a protection charm costs 5000 points of your score.
 
-The link to the demo video can be found on the youtube, below is the link:
-
-
+# Claims:
 Credits from proposal (used for CSC562 grading):
 
 0. properly turn in : (5%)
