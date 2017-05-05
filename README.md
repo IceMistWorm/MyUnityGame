@@ -9,10 +9,13 @@ Please allow 30~60 seconds for loading the game.
 And playing in full screen is suggested.
 
 Sample screencast for this game can be found below:
+
 https://drive.google.com/file/d/0B4IIm1ziXVY-NkgtT0hfRjUwSWM/view?usp=sharing
+
 https://drive.google.com/file/d/0B4IIm1ziXVY-MF9PVFltU0tzVnM/view?usp=sharing
 
 Game Contorll Instruction:
+
 To play the game, you can either use arrow key or use wasd key to move the player back and forth. 
 To attack the boss (the robot keep moving in front of you), simply press z to shoot some stars.
 To prevent from attack from the boss, please press x to open a protection charm.
