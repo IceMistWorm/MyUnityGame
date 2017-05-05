@@ -3,6 +3,8 @@
 This project is a final project for CSC562 in NCSU
 I host this game on another website, to play this on the web, please visit the link below:
 
+https://digtorio.itch.io/shooting-star?secret=lAFbTDpTijGWbbrjTxcbKvW13Xs
+
 Please allow 30~60 seconds for loading the game.
 
 Game Contorll Instruction:
