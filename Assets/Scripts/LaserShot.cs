@@ -41,9 +41,8 @@ public class LaserShot : MonoBehaviour
         if (accumulateTime >= laserStartTime && accumulateTime < laserTime)
         {
 
-            if (!shotSignal)
+            if (!shotSignal && !gameController.isGameOver())
             {
-
                 line.startWidth = 0.05f;
                 line.endWidth = 0.05f;
                 laserStart = transform.position;

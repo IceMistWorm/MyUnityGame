@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour {
     public Transform shotSpawn;
     public float fireRate;
 
+    private GameController gameController;
     private float nextFire;
     private Rigidbody rb;
     private bool protectionActive = false;
@@ -27,6 +28,15 @@ public class PlayerController : MonoBehaviour {
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        GameObject gameControllerObject = GameObject.FindWithTag("GameController");
+        if (gameControllerObject != null)
+        {
+            gameController = gameControllerObject.GetComponent<GameController>();
+        }
+        if (gameController == null)
+        {
+            Debug.Log("Cannot find 'GameController' script");
+        }
     }
 
     void Update()
@@ -48,7 +58,7 @@ public class PlayerController : MonoBehaviour {
             Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
         }
 
-        if (Input.GetKey("x") && !protectionActive)
+        if (Input.GetKey("x") && !protectionActive && gameController.getProtectionActive())
         {
             protectionActive = true;
             protection.SetActive(true);

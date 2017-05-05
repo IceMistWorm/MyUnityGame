@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class GameController : MonoBehaviour {
 
     public GameObject hazard, hazard2, hazard3, hazard4,hazard5,hazard6,hazard7,hazard8,mistyCosmicAttack, mistyCosmicAttack2, mistyCosmicAttack3;
-    public GameObject greatMosaicWall, bigAnnoyingBall;
+    public GameObject greatMosaicWall, bigAnnoyingBall, attackWithBall;
     public GameObject laserBall,laserBall2;
     public GameObject spellCardScene;
     public GameObject MistyEffect,MistyEffect2, MistyEffect3;
@@ -16,7 +16,7 @@ public class GameController : MonoBehaviour {
     public float spawnWait;
     public float startWait;
     public float waveWait;
-    
+    public int playerLife;
 
     public AudioClip bossSpellCard;
     public AudioClip bossBasicAttack1;
@@ -32,6 +32,9 @@ public class GameController : MonoBehaviour {
     public GUIText restartText;
     public GUIText gameoverText;
     public GUIText gameclearText;
+    public Text playerScore;
+    public Text bonusScore;
+    public Text playerLifeText;
 
     public Slider BossHealthBar;
     public Text SpellCardName;
@@ -66,14 +69,17 @@ public class GameController : MonoBehaviour {
     private bool randomSkipIncrease = true;
     private bool attackHitPlayer = false;
     private bool wallBuilt = false;
-    private bool spell7LaserBallBuilt = false;
     private bool spell2LaserBallBuilt = false;
     private bool spell1LaserBallBuilt = false;
     private GameObject boss;
+    private GameObject player;
     private bool triggerPlayerDeath = false;
     private float playerDeathTime = 3.0f;
     private bool protectionActive = false;
     private float cannotDeathTime = 2.5f;
+    private int score;
+    private bool useProtection = false;
+    private bool playerDeathInThisStage = false;
 
     void Start()
     {
@@ -85,14 +91,19 @@ public class GameController : MonoBehaviour {
         gameover = false;
         gameclear = false;
         restart = false;
+        score = 10000;
         UpdateBossLife();
         StartCoroutine(SpawnWaves());
         bossPreviousSpell = bossSpell;
         boss = GameObject.FindGameObjectWithTag("Boss");
+        player = GameObject.FindGameObjectWithTag("Player");
         dirRedLight.enabled = false;
         spellCardScene.SetActive(false);
         robotImage.enabled = false;
         updateSpellCardText();
+        updateScoreText();
+        updateBonusScoreText();
+        updatePlayerLifeText();
     }
 
     private void Awake()
@@ -117,10 +128,19 @@ public class GameController : MonoBehaviour {
             if (!triggerPlayerDeath && !protectionActive)
             {
                 triggerPlayerDeath = true;
+                playerDeathInThisStage = true;
+                updateBonusScoreText();
                 source.PlayOneShot(playerDeath);
                 if (isGameClear() == false)
                 {
-                    //GameOver();
+                    if (playerLife == 0)
+                    {
+                        GameOver();
+                    }else
+                    {
+                        playerLife--;
+                        updatePlayerLifeText();
+                    }
                 }
             }
         }
@@ -135,9 +155,16 @@ public class GameController : MonoBehaviour {
                 cannotDeathTime = 2.5f;
             }
         }
-        if (Input.GetKey("x") && !protectionActive)
+        if (Input.GetKey("x") && !protectionActive && !gameover && !gameclear)
         {
-            protectionActive = true;
+            if (score >= 5000)
+            {
+                score -= 5000;
+                protectionActive = true;
+                useProtection = true;
+                updateScoreText();
+                updateBonusScoreText();
+            }
         }
 
         if (bossSpell == 7)
@@ -157,6 +184,8 @@ public class GameController : MonoBehaviour {
                 Vector3 spawnPosition = new Vector3(boss.transform.position.x, boss.transform.position.y +20 , boss.transform.position.z-10);
                 Quaternion spawnRotation = Quaternion.identity;
                 Instantiate(bigAnnoyingBall, spawnPosition, spawnRotation);
+                spawnPosition = new Vector3(boss.transform.position.x * -1, boss.transform.position.y + 20, boss.transform.position.z - 8);
+                Instantiate(attackWithBall, spawnPosition, spawnRotation);
                 accumulateTime = 0;
             }
             /*
@@ -234,8 +263,6 @@ public class GameController : MonoBehaviour {
                 source.PlayOneShot(horn, 0.85f);
                 Quaternion spawnRotation = Quaternion.identity;
                 Vector3 spawnPosition1 = new Vector3(0.0f, 1.0f, 15.0f);
-                Vector3 spawnPosition2 = new Vector3(-10.0f, 1.0f, 15.0f);
-                Vector3 spawnPosition3 = new Vector3(10.0f, 1.0f, 15.0f);
                 Instantiate(laserBall2, spawnPosition1, spawnRotation);
             }
         }
@@ -697,15 +724,25 @@ public class GameController : MonoBehaviour {
         if (bosslife < 0)
         {
             bosslife = bossBasicLife;
+            score += 30000;
+            if (!useProtection && !playerDeathInThisStage)
+            {
+                score += 30000;
+            }
+            useProtection = false;
+            playerDeathInThisStage = false;
+            updateScoreText();
+            updateBonusScoreText();
             setBossExplode(true);
             bossSpell--;
             if (bossSpell == 1)
             {
                 bosslife = bossFinalLife;
             }
-            source.PlayOneShot(bossDefeated, 0.2f);
+            source.PlayOneShot(bossDefeated, 0.4f);
             if (bossSpell==0){
                 bosslife = 0;
+                score += 100000;
             }
         }
         UpdateBossLife();
@@ -732,6 +769,7 @@ public class GameController : MonoBehaviour {
     {
         gameoverText.text = "Game Over";
         gameover = true;
+        Destroy(player);
     }
 
     public void GameClear()
@@ -793,7 +831,7 @@ public class GameController : MonoBehaviour {
 
     private void updateSpellCardText() {
         if (bossSpell == 8) {
-            SpellCardName.text = "";
+            SpellCardName.text = "Beginning of the Star Road";
         }
         else if (bossSpell == 7) {
             SpellCardName.text = "[Earth Spell] Natural Mosaic";
@@ -803,7 +841,7 @@ public class GameController : MonoBehaviour {
             SpellCardName.text = "Believer's Narrow Road";
         } else if (bossSpell == 5)
         {
-            SpellCardName.text = "[Earth Spell]The Great Refraction Wall";
+            SpellCardName.text = "[Earth Spell] The Great Refraction Wall";
         }
         else if (bossSpell == 4)
         {
@@ -821,5 +859,26 @@ public class GameController : MonoBehaviour {
         {
             SpellCardName.text = "[Thunder Spell] Particle Overflow";
         }
+    }
+
+    private void updateScoreText()
+    { 
+        playerScore.text = "Score: " + score;
+    }
+    private void updateBonusScoreText()
+    {
+        if(useProtection || playerDeathInThisStage)
+            bonusScore.text = "current stage bonus: FAIL";
+        else
+            bonusScore.text = "current stage bonus: ON";
+    }
+
+    private void updatePlayerLifeText()
+    {
+        playerLifeText.text = "Player Life: " + playerLife;
+    }
+    public int getCurrentScore()
+    {
+        return score;
     }
 }
