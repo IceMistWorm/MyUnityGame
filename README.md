@@ -6,6 +6,11 @@ I host this game on another website, to play this on the web, please visit the l
 https://digtorio.itch.io/shooting-star?secret=lAFbTDpTijGWbbrjTxcbKvW13Xs
 
 Please allow 30~60 seconds for loading the game.
+And playing in full screen is suggested.
+
+Sample screencast for this game can be found below:
+https://drive.google.com/file/d/0B4IIm1ziXVY-NkgtT0hfRjUwSWM/view?usp=sharing
+https://drive.google.com/file/d/0B4IIm1ziXVY-MF9PVFltU0tzVnM/view?usp=sharing
 
 Game Contorll Instruction:
 To play the game, you can either use arrow key or use wasd key to move the player back and forth. 
